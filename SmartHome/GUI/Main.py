@@ -17,64 +17,26 @@ class WindowClass(QMainWindow, from_class):
         self.timer.start(1000)
         self.update_time()
 
-        # 변경된 QSlider 변수명 반영
-        self.slider_led.setStyleSheet(self.get_style(0))
-        self.slider_led.mousePressEvent = self.led_slider
+        # 슬라이더 설정
+        self.setup_slider(self.slider_led)
+        self.setup_slider(self.slider_garage)
+        self.setup_slider(self.slider_door)
+        self.setup_slider(self.slider_window)
 
-        self.slider_garage.setStyleSheet(self.get_style(0))
-        self.slider_garage.mousePressEvent = self.garage_slider
+    def setup_slider(self, slider):
+        """ 슬라이더 공통 설정 """
+        slider.setStyleSheet(self.get_style(0))  # 초기 스타일 설정
+        slider.mousePressEvent = lambda event, s=slider: self.toggle_slider(event, s)  # 공통 이벤트 핸들러 적용
 
-        self.slider_door.setStyleSheet(self.get_style(0))
-        self.slider_door.mousePressEvent = self.door_slider
-
-        self.slider_window.setStyleSheet(self.get_style(0))
-        self.slider_window.mousePressEvent = self.window_slider
-
-    def led_slider(self, event):
-        """ 슬라이더 클릭하면 자동으로 ON/OFF 전환 """
-        if self.slider_led.value() == 0:
+    def toggle_slider(self, event, slider):
+        """ 슬라이더 클릭 시 ON/OFF 전환 """
+        if slider.value() == 0:
             new_value = 1
         else:
             new_value = 0
 
-        self.slider_led.setValue(new_value)
-        self.slider_led.setStyleSheet(self.get_style(new_value))
-
-        super().mousePressEvent(event)
-
-    def garage_slider(self, event):
-        """ 슬라이더 클릭하면 자동으로 ON/OFF 전환 """
-        if self.slider_garage.value() == 0:
-            new_value = 1
-        else:
-            new_value = 0
-
-        self.slider_garage.setValue(new_value)
-        self.slider_garage.setStyleSheet(self.get_style(new_value))
-
-        super().mousePressEvent(event)
-
-    def door_slider(self, event):
-        """ 슬라이더 클릭하면 자동으로 ON/OFF 전환 """
-        if self.slider_door.value() == 0:
-            new_value = 1
-        else:
-            new_value = 0
-
-        self.slider_door.setValue(new_value)
-        self.slider_door.setStyleSheet(self.get_style(new_value))
-
-        super().mousePressEvent(event)
-
-    def window_slider(self, event):
-        """ 슬라이더 클릭하면 자동으로 ON/OFF 전환 """
-        if self.slider_window.value() == 0:
-            new_value = 1
-        else:
-            new_value = 0
-
-        self.slider_window.setValue(new_value)
-        self.slider_window.setStyleSheet(self.get_style(new_value))
+        slider.setValue(new_value)
+        slider.setStyleSheet(self.get_style(new_value))
 
         super().mousePressEvent(event)
 

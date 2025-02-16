@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import uic
-import mysql.connector
+import mysql.connector 
 from Main import WindowClass  # Main.py의 WindowClass 가져오기
 
 # UI 파일 로드
