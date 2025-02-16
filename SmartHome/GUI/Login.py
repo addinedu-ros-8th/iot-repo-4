@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import uic
+<<<<<<< HEAD
 import mysql.connector
 
 # UI 파일 로드
@@ -11,6 +12,12 @@ class MainWindow(QMainWindow, MainUI):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Main.ui 로드
+=======
+from Main import WindowClass  # ✅ Main.py의 WindowClass 가져오기
+
+# UI 파일 로드
+LoginUI = uic.loadUiType("Login.ui")[0]
+>>>>>>> 3c714bc (ON_OFF_toggle slider)
 
 class LoginWindow(QMainWindow, LoginUI):
     def __init__(self):
@@ -23,11 +30,12 @@ class LoginWindow(QMainWindow, LoginUI):
             database = "chillHome"
         )
 
-        # 로그인 버튼 클릭 시 메인 창 열기
+        # 로그인 버튼 클릭 시 Main.py의 WindowClass 실행
         self.Login_btn.clicked.connect(self.open_main_window)
 
 
     def open_main_window(self):
+<<<<<<< HEAD
         id = self.lineEdit.text()
         passwd = self.lineEdit_2.text()
         
@@ -42,6 +50,11 @@ class LoginWindow(QMainWindow, LoginUI):
             self.close()  # 현재 로그인 창 닫기
         else:
             QMessageBox.warning(self, 'QMessageBox - set title', '아이디 또는 비밀번호가 틀렸습니다. 확인 후 다시 시도해주세요.')
+=======
+        self.main_window = WindowClass()  # ✅ Main.py의 WindowClass 실행
+        self.main_window.show()  # ✅ Main.ui를 실행
+        self.close()  # 현재 로그인 창 닫기
+>>>>>>> 3c714bc (ON_OFF_toggle slider)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
