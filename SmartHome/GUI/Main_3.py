@@ -4,6 +4,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider
 from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5 import uic
+import urllib.request
+from PyQt5.QtGui import *
 
 # UI 파일 로드
 from_class = uic.loadUiType("Main_3.ui")[0]
@@ -12,14 +14,19 @@ class WindowClass(QMainWindow, from_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        
+        #chillguy 이미지
+        self.pixmap = QPixmap()
+        self.pixmap.load("./data/chillguy.png")
 
-        #tab 기능 추가
-        #stackedWidget 안에서 버튼 찾기
-        # self.btn_main = self.stackedWidget.findChild(QPushButton, "btn_main")
-        # self.btn_log = self.stackedWidget.findChild(QPushButton, "btn_log")
-        # self.btn_user = self.stackedWidget.findChild(QPushButton, "btn_user")
+        self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
+        self.label_chillguy.setPixmap(self.pixmap)
+        
 
+        #초기화면설정
+        self.change_page(0)
 
+        #tabmeunu 버튼 
         self.btn_main.clicked.connect(lambda: self.change_page(0))
         self.btn_main_3.clicked.connect(lambda: self.change_page(0))
         self.btn_main_4.clicked.connect(lambda: self.change_page(0))
@@ -42,12 +49,21 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_door)
         self.setup_slider(self.slider_window)
 
+    # 버튼 눌러서 tab 변경 
     def change_page(self, index):
         # 버튼 클릭 시 QStackedWidget 페이지 변경 """
 
         if hasattr(self, "stackedWidget"):
             self.stackedWidget.setCurrentIndex(index)
-            print("성공")
+            if hasattr(self, "label_title"):
+                if index == 0:
+                    self.label_title.setText("Main")
+                elif index == 1:
+                    self.label_title.setText("LOG")
+                elif index == 2:
+                    self.label_title.setText("USER")
+                else:
+                    print("label title failed")
 
         else:
             print("실패")
