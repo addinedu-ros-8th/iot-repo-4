@@ -6,12 +6,29 @@ from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5 import uic
 
 # UI 파일 로드
-from_class = uic.loadUiType("Main.ui")[0]
+from_class = uic.loadUiType("Main_3.ui")[0]
 
 class WindowClass(QMainWindow, from_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        #tab 기능 추가
+        #stackedWidget 안에서 버튼 찾기
+        # self.btn_main = self.stackedWidget.findChild(QPushButton, "btn_main")
+        # self.btn_log = self.stackedWidget.findChild(QPushButton, "btn_log")
+        # self.btn_user = self.stackedWidget.findChild(QPushButton, "btn_user")
+
+
+        self.btn_main.clicked.connect(lambda: self.change_page(0))
+        self.btn_main_3.clicked.connect(lambda: self.change_page(0))
+        self.btn_main_4.clicked.connect(lambda: self.change_page(0))
+        self.btn_log.clicked.connect(lambda: self.change_page(1))
+        self.btn_log_3.clicked.connect(lambda: self.change_page(1))
+        self.btn_log_4.clicked.connect(lambda: self.change_page(1))
+        self.btn_user_3.clicked.connect(lambda: self.change_page(2))
+        self.btn_user_4.clicked.connect(lambda: self.change_page(2))
+
 
         # 시간 업데이트 기능 추가
         self.timer = QTimer(self)
@@ -24,6 +41,17 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_garage)
         self.setup_slider(self.slider_door)
         self.setup_slider(self.slider_window)
+
+    def change_page(self, index):
+        # 버튼 클릭 시 QStackedWidget 페이지 변경 """
+
+        if hasattr(self, "stackedWidget"):
+            self.stackedWidget.setCurrentIndex(index)
+            print("성공")
+
+        else:
+            print("실패")
+
 
     def setup_slider(self, slider):
         """ 슬라이더 공통 설정 """
@@ -78,3 +106,5 @@ if __name__ == "__main__":
     myWindows = WindowClass()
     myWindows.show()
     sys.exit(app.exec_())
+
+

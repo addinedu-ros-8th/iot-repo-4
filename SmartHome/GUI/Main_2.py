@@ -1,5 +1,5 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider
+# Tab 메뉴 테스트하기 위한 메인 파일입니다.
+
 from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5 import uic
 
