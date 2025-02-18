@@ -51,7 +51,7 @@
 </string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="page_1">
     <widget class="QPushButton" name="btn_main">
@@ -1501,10 +1501,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_chillguy">
    <property name="geometry">
     <rect>
-     <x>740</x>
-     <y>70</y>
-     <width>121</width>
-     <height>131</height>
+     <x>700</x>
+     <y>20</y>
+     <width>181</width>
+     <height>221</height>
     </rect>
    </property>
    <property name="text">
