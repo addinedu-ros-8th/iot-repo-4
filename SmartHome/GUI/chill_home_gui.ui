@@ -51,7 +51,7 @@
 </string>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="page_1">
     <widget class="QPushButton" name="btn_main">
@@ -78,9 +78,9 @@
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -105,18 +105,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -143,9 +143,9 @@
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -170,18 +170,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -208,9 +208,9 @@
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -235,18 +235,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -264,10 +264,10 @@
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-    background-color: rgb(204, 221, 255); /* 연한 하늘색 */
-	border: 1px solid gray;  /* 테두리 */
-    border-radius: 15px;  /* 모서리를 둥글게 (값을 조절 가능) */
-    padding: 5px;  /* 내부 여백 */
+    border-radius: 10px;  /* 모서리 둥글게 */
+    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
+    background-color: palette(button); /* 기본 버튼 색 유지 */
+    color: palette(button-text); /* 기본 글자 색 유지 */
 }
 </string>
      </property>
@@ -699,9 +699,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -726,18 +726,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -764,9 +764,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -791,18 +791,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -829,9 +829,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -856,18 +856,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -885,10 +885,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-    background-color: rgb(204, 221, 255); /* 연한 하늘색 */
-	border: 1px solid gray;  /* 테두리 */
-    border-radius: 15px;  /* 모서리를 둥글게 (값을 조절 가능) */
-    padding: 5px;  /* 내부 여백 */
+    border-radius: 10px;  /* 모서리 둥글게 */
+    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
+    background-color: palette(button); /* 기본 버튼 색 유지 */
+    color: palette(button-text); /* 기본 글자 색 유지 */
 }
 </string>
      </property>
@@ -1229,9 +1229,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1256,18 +1256,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1294,9 +1294,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1321,18 +1321,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1359,9 +1359,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Button">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1386,18 +1386,18 @@ border-radius: 5px;  /* 모서리 둥글게 */
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>204</red>
-           <green>221</green>
-           <blue>255</blue>
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
           </color>
          </brush>
         </colorrole>
@@ -1415,11 +1415,12 @@ border-radius: 5px;  /* 모서리 둥글게 */
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-    background-color: rgb(204, 221, 255); /* 연한 하늘색 */
-	border: 1px solid gray;  /* 테두리 */
-    border-radius: 15px;  /* 모서리를 둥글게 (값을 조절 가능) */
-    padding: 5px;  /* 내부 여백 */
-}</string>
+    border-radius: 10px;  /* 모서리 둥글게 */
+    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
+    background-color: palette(button); /* 기본 버튼 색 유지 */
+    color: palette(button-text); /* 기본 글자 색 유지 */
+}
+</string>
      </property>
      <property name="text">
       <string>MAIN</string>
