@@ -599,6 +599,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QOpenGLWidget" name="openGLWidget">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>511</width>
+       <height>391</height>
+      </rect>
+     </property>
+    </widget>
     <zorder>label_5</zorder>
     <zorder>label_4</zorder>
     <zorder>label_3</zorder>
@@ -615,6 +625,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <zorder>slider_window</zorder>
     <zorder>slider_led</zorder>
     <zorder>label_2</zorder>
+    <zorder>openGLWidget</zorder>
    </widget>
    <widget class="QWidget" name="page_2">
     <property name="enabled">

@@ -1,14 +1,14 @@
-# 메인 화면 코드입니다.
+# Main Gui 코드 + LOG 화면
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider
-from PyQt5.QtCore import QTimer, QDateTime
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from PyQt5 import uic
 import urllib.request
 from PyQt5.QtGui import *
 
 # UI 파일 로드
-from_class = uic.loadUiType("Main_3.ui")[0]
+from_class = uic.loadUiType("chill_home_gui.ui")[0]
 
 class WindowClass(QMainWindow, from_class):
     def __init__(self):
@@ -28,13 +28,13 @@ class WindowClass(QMainWindow, from_class):
 
         #tabmeunu 버튼 
         self.btn_main.clicked.connect(lambda: self.change_page(0))
+        self.btn_main_2.clicked.connect(lambda: self.change_page(0))
         self.btn_main_3.clicked.connect(lambda: self.change_page(0))
-        self.btn_main_4.clicked.connect(lambda: self.change_page(0))
         self.btn_log.clicked.connect(lambda: self.change_page(1))
+        self.btn_log_2.clicked.connect(lambda: self.change_page(1))
         self.btn_log_3.clicked.connect(lambda: self.change_page(1))
-        self.btn_log_4.clicked.connect(lambda: self.change_page(1))
+        self.btn_user_2.clicked.connect(lambda: self.change_page(2))
         self.btn_user_3.clicked.connect(lambda: self.change_page(2))
-        self.btn_user_4.clicked.connect(lambda: self.change_page(2))
 
 
         # 시간 업데이트 기능 추가
@@ -116,6 +116,34 @@ class WindowClass(QMainWindow, from_class):
         """ 현재 날짜를 QLabel에 표시 """
         current_date = QDateTime.currentDateTime().toString("yyyy - MM - dd dddd")
         self.label_date.setText(current_date)
+
+    ###############LOG 함수#################
+
+    def setup_table(self): # 임시로 데이터 넣어놓을게요 DB랑 연결해야함
+        data = [
+            ["재니", "Door Lock", "Face ID", "OPEN", "2025-02-13"],
+            ["-", "LED", "Switch", "OFF", "2025-02-13"],
+            ["-", "Window", "GUI", "OPEN", "2025-02-13"],
+            ["-", "Garage", "GUI", "CLOSE", "2025-02-13"],
+            ["재니", "Door Lock", "Smart Key", "OPEN", "2025-02-12"],
+        ]
+
+        self.tableWidget.setRowCount(0)  # 기존 행 삭제
+        
+        for row in data:
+            self.add_row(row)
+
+    def add_row(self, data):
+        row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
+        self.tableWidget.insertRow(row_position)  # 새 행 추가
+
+        for col, value in enumerate(data):
+            item = QTableWidgetItem(value)  # 아이템 생성
+            item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
+            self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
+    
+    ###############LOG 함수#################
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
