@@ -11,7 +11,7 @@ from PyQt5.QtGui import *
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
 
 class WindowClass(QMainWindow, from_class):
-    def __init__(self, userInfo):
+    def __init__(self, userInfo = None):
         super().__init__()
         self.setupUi(self)
         
@@ -58,10 +58,13 @@ class WindowClass(QMainWindow, from_class):
             if hasattr(self, "label_title"):
                 if index == 0:
                     self.label_title.setText("Main")
+                    self.btn_main.setStyleSheet("background-color: rgb(204, 221, 255);")
                 elif index == 1:
                     self.label_title.setText("LOG")
+                    self.btn_log_2.setStyleSheet("background-color: rgb(204, 221, 255);")
                 elif index == 2:
                     self.label_title.setText("USER")
+                    self.btn_user_3.setStyleSheet("background-color: rgb(204, 221, 255);")
                 else:
                     print("label title failed")
 
