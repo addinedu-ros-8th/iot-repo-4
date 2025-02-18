@@ -11,7 +11,7 @@ from PyQt5.QtGui import *
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
 
 class WindowClass(QMainWindow, from_class):
-    def __init__(self):
+    def __init__(self, userInfo):
         super().__init__()
         self.setupUi(self)
         
