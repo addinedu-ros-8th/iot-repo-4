@@ -6,6 +6,7 @@ from PyQt5.QtCore import *
 from PyQt5 import uic
 import urllib.request
 from PyQt5.QtGui import *
+import mysql.connector
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
@@ -48,6 +49,16 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_garage)
         self.setup_slider(self.slider_door)
         self.setup_slider(self.slider_window)
+
+        self.remote = mysql.connector.connect(
+            host="database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
+            user="chillHome",
+            password="addinedu1!",
+            database="chillHome"
+        )
+
+        self.btnSearch.clicked.connect(self.userSearch)
+        self.editName.returnPressed.connect(self.userSearch)
 
     # 버튼 눌러서 tab 변경 
     def change_page(self, index):
@@ -146,6 +157,42 @@ class WindowClass(QMainWindow, from_class):
             self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
     
     ###############LOG 함수#################
+
+    ############### USER 함수 ##############
+    def userSearch(self):
+        params = ""
+
+        name = self.editName.text()
+
+        if name != "":
+            params = "WHERE name = '" + name + "'"
+
+        cursor = self.remote.cursor()
+        cursor.execute(f"SELECT * FROM users {params}")
+        results = cursor.fetchall()
+        
+        for result in results:
+            row = self.tableWidget_2.rowCount()
+            self.tableWidget_2.insertRow(row)
+
+            checkbox = QCheckBox()
+            widget = QWidget()
+            layout = QHBoxLayout()
+            layout.addWidget(checkbox)
+            layout.setAlignment(Qt.AlignCenter)  # 체크박스를 가운데 정렬
+            layout.setContentsMargins(0, 0, 0, 0)
+            widget.setLayout(layout)
+            self.tableWidget_2.setCellWidget(row, 0, widget)
+
+            # 사용자 정보 추가
+            self.tableWidget_2.setItem(row, 1, QTableWidgetItem(str(result[1])))
+            self.tableWidget_2.setItem(row, 2, QTableWidgetItem(str(result[4])))
+            self.tableWidget_2.setItem(row, 3, QTableWidgetItem(str(result[5])))
+            self.tableWidget_2.setItem(row, 4, QTableWidgetItem(str(result[6])))
+            self.tableWidget_2.setItem(row, 5, QTableWidgetItem(str('master' if result[3] else 'normal')))
+            self.tableWidget_2.setItem(row, 6, QTableWidgetItem(str(result[6])))
+            self.tableWidget_2.setItem(row, 7, QTableWidgetItem(str(result[7])))
+    ############### /USER 함수 #############
 
 
 if __name__ == "__main__":

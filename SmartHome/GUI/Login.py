@@ -23,6 +23,7 @@ class LoginWindow(QMainWindow, LoginUI):
 
         # 로그인 버튼 클릭 시 Main.py의 WindowClass 실행
         self.Login_btn.clicked.connect(self.open_main_window)
+        self.lineEdit_2.returnPressed.connect(self.open_main_window)
 
     def open_main_window(self):
         """ MySQL 로그인 검증 후 Main.py 실행 """
