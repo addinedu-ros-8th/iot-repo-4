@@ -398,7 +398,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>700</x>
+       <x>695</x>
        <y>360</y>
        <width>38</width>
        <height>38</height>
@@ -448,7 +448,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>780</x>
+       <x>775</x>
        <y>360</y>
        <width>38</width>
        <height>38</height>
@@ -492,7 +492,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>735</x>
        <y>360</y>
        <width>38</width>
        <height>38</height>
