@@ -192,152 +192,133 @@
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="dateEnd">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>100</y>
-     <width>111</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="categoryBox">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>100</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>All</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Door Lock</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>LED</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Window</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Garage</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Gas Alert</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QComboBox" name="statusBox">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>100</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>All</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>OPEN</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CLOSE</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>OFF</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="labelDate">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>241</x>
-     <y>101</y>
-     <width>33</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Date</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
      <y>100</y>
-     <width>16</width>
-     <height>32</height>
+     <width>701</width>
+     <height>34</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>~</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelStatus">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>100</y>
-     <width>44</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Status</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelCategory">
-   <property name="geometry">
-    <rect>
-     <x>770</x>
-     <y>100</y>
-     <width>64</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Category</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="dateStart">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>100</y>
-     <width>111</width>
-     <height>25</height>
-    </rect>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="labelDate">
+      <property name="text">
+       <string>Date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="dateStart">
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>~</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="dateEnd"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelStatus">
+      <property name="text">
+       <string>Status</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="statusBox">
+      <item>
+       <property name="text">
+        <string>All</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>OPEN</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CLOSE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>OFF</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelCategory">
+      <property name="text">
+       <string>Category</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="categoryBox">
+      <item>
+       <property name="text">
+        <string>All</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Door Lock</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>LED</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Window</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Garage</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Gas Alert</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
