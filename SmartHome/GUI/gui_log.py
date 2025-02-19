@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import uic
 from PyQt5.QtCore import *
-
+import mysql.connector
 
 from_class = uic.loadUiType("gui_log.ui")[0]
 
@@ -13,6 +13,15 @@ class WindowClass(QMainWindow, from_class) :
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        # DB
+        self.remote = mysql.connector.connect(
+            host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
+            port = 3306,
+            user = "chillHome",
+            password = "addinedu1!",
+            database = "chillHome"
+        )
 
         # 인덱스(행 번호) 숨기기
         self.tableWidget.verticalHeader().setVisible(False)
@@ -44,20 +53,21 @@ class WindowClass(QMainWindow, from_class) :
         # time & table 연결
         self.dateStart.currentTextChanged.connect(self.filter_table)
         self.dateEnd.currentTextChanged.connect(self.filter_table)
- 
-    def setup_table(self): # 임시로 데이터 넣어놓을게요 DB랑 연결해야함
-        data = [
-            ["재니", "Door Lock", "Face ID", "OPEN", "2025-02-13"],
-            ["-", "LED", "Switch", "OFF", "2025-02-13"],
-            ["-", "Window", "GUI", "OPEN", "2025-02-13"],
-            ["-", "Garage", "GUI", "CLOSE", "2025-02-13"],
-            ["재니", "Door Lock", "Smart Key", "OPEN", "2025-02-12"],
-        ]
 
-        self.tableWidget.setRowCount(0)  # 기존 행 삭제
+        
+        
+    def setup_table(self): 
+        cursor = self.remote.cursor()
+        cursor.execute("SELECT * FROM smartHomeLog;")
+        data = cursor.fetchall()  # 결과 가져오기
         
         for row in data:
             self.add_row(row)
+
+
+    def close_connection(self):
+        self.cursor.close()
+        self.connection.close()
 
     def add_row(self, data):
         row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
