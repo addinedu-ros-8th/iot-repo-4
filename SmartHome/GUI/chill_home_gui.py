@@ -20,9 +20,13 @@ class WindowClass(QMainWindow, from_class):
         self.pixmap = QPixmap()
         self.pixmap.load("./data/chillguy.png")
 
-        self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
-        self.label_chillguy.setPixmap(self.pixmap)
-        
+        scaled_pixmap = self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
+        self.label_chillguy.setPixmap(scaled_pixmap)
+
+        #chiily guy 투명도 적용
+        opacity_effect = QGraphicsOpacityEffect()
+        opacity_effect.setOpacity(0.3)
+        self.label_chillguy.setGraphicsEffect(opacity_effect)
 
         #초기화면설정
         self.change_page(0)
