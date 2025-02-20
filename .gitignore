@@ -169,6 +169,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+<<<<<<< HEAD
+.DS_Store
+=======
 
 # model
 SmartHome/GUI/model/*
+>>>>>>> 6aba453ff2b9e588b6b9d47064a14d900fcc5634
