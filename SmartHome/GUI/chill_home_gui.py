@@ -7,14 +7,45 @@ from PyQt5 import uic
 import urllib.request
 from PyQt5.QtGui import *
 import mysql.connector
+import time
+import cv2
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
+
+
+class Camera(QThread):
+    update = pyqtSignal()
+
+    def __init__(self, sec=0, parent = None):
+        super().__init__()
+        self.main = parent
+        self.running = True
+
+    def run(self):
+        while self.running == True:
+            self.update.emit()
+            time.sleep(0.04)
+
+    def stop(self):
+        self.running = False
 
 class WindowClass(QMainWindow, from_class):
     def __init__(self, userInfo = None):
         super().__init__()
         self.setupUi(self)
+
+
+        #카메라 상태 확인 및 객체 생성
+        self.isCameraOn = False
+        self.pixmap = QPixmap()
+        self.camera = Camera(self)
+        self.camera.daemon = True
+
+        #카메라 온오프 버튼
+        self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+        self.btn_Camera.clicked.connect(self.clickCamera)
+        self.camera.update.connect(self.updateCamera)
         
         #chillguy 이미지
         self.pixmap = QPixmap()
@@ -63,6 +94,47 @@ class WindowClass(QMainWindow, from_class):
 
         self.btnSearch.clicked.connect(self.userSearch)
         self.editName.returnPressed.connect(self.userSearch)
+
+    # 카메라 On    
+    def updateCamera(self):
+        retval, image = self.video.read()
+
+        if retval:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+            h, w, c = image.shape
+            qimage = QImage(image.data, w, h, w*c, QImage.Format_RGB888)
+
+            self.pixmap = self.pixmap.fromImage(qimage)
+            self.pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.height())
+
+            self.label_Camera.setPixmap(self.pixmap)
+
+    #카메라 클릭 했을 때 함수
+    def clickCamera(self):
+        if self.isCameraOn == False:
+            self.btn_Camera.setStyleSheet("background-color: rgb(0, 255, 0);")
+            self.isCameraOn = True
+
+            self.cameraStart()
+
+        else:
+            self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+            self.isCameraOn = False
+
+            self.cameraStop()
+
+    #카메라 start 함수
+    def cameraStart(self):
+        self.camera.running = True
+        self.camera.start()
+        self.video = cv2.VideoCapture(-1)
+
+    #카메라 stop 함수
+    def cameraStop(self):
+        self.camera.running = False
+        self.video.release
+
 
     # 버튼 눌러서 tab 변경 
     def change_page(self, index):
@@ -204,5 +276,4 @@ if __name__ == "__main__":
     myWindows = WindowClass()
     myWindows.show()
     sys.exit(app.exec_())
-
 
