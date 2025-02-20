@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
+    <width>321</width>
     <height>366</height>
    </rect>
   </property>
@@ -16,9 +16,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>30</x>
      <y>20</y>
-     <width>361</width>
+     <width>251</width>
      <height>51</height>
     </rect>
    </property>
@@ -29,26 +29,13 @@
     </font>
    </property>
    <property name="text">
-    <string>USER ADD</string>
+    <string>USER UPDATE</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnExist">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>110</y>
-     <width>71</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>중복확인</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnNext">
+  <widget class="QPushButton" name="btnComplete">
    <property name="geometry">
     <rect>
      <x>220</x>
@@ -58,7 +45,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>다음</string>
+    <string>완료</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
