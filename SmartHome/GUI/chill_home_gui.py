@@ -6,22 +6,58 @@ from PyQt5.QtCore import *
 from PyQt5 import uic
 import urllib.request
 from PyQt5.QtGui import *
+import mysql.connector
+import time
+import cv2
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
+
+
+class Camera(QThread):
+    update = pyqtSignal()
+
+    def __init__(self, sec=0, parent = None):
+        super().__init__()
+        self.main = parent
+        self.running = True
+
+    def run(self):
+        while self.running == True:
+            self.update.emit()
+            time.sleep(0.04)
+
+    def stop(self):
+        self.running = False
 
 class WindowClass(QMainWindow, from_class):
     def __init__(self, userInfo = None):
         super().__init__()
         self.setupUi(self)
+
+
+        #카메라 상태 확인 및 객체 생성
+        self.isCameraOn = False
+        self.pixmap = QPixmap()
+        self.camera = Camera(self)
+        self.camera.daemon = True
+
+        #카메라 온오프 버튼
+        self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+        self.btn_Camera.clicked.connect(self.clickCamera)
+        self.camera.update.connect(self.updateCamera)
         
         #chillguy 이미지
         self.pixmap = QPixmap()
         self.pixmap.load("./data/chillguy.png")
 
-        self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
-        self.label_chillguy.setPixmap(self.pixmap)
-        
+        scaled_pixmap = self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
+        self.label_chillguy.setPixmap(scaled_pixmap)
+
+        #chiily guy 투명도 적용
+        opacity_effect = QGraphicsOpacityEffect()
+        opacity_effect.setOpacity(0.3)
+        self.label_chillguy.setGraphicsEffect(opacity_effect)
 
         #초기화면설정
         self.change_page(0)
@@ -48,6 +84,57 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_garage)
         self.setup_slider(self.slider_door)
         self.setup_slider(self.slider_window)
+
+        self.remote = mysql.connector.connect(
+            host="database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
+            user="chillHome",
+            password="addinedu1!",
+            database="chillHome"
+        )
+
+        self.btnSearch.clicked.connect(self.userSearch)
+        self.editName.returnPressed.connect(self.userSearch)
+
+    # 카메라 On    
+    def updateCamera(self):
+        retval, image = self.video.read()
+
+        if retval:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+            h, w, c = image.shape
+            qimage = QImage(image.data, w, h, w*c, QImage.Format_RGB888)
+
+            self.pixmap = self.pixmap.fromImage(qimage)
+            self.pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.height())
+
+            self.label_Camera.setPixmap(self.pixmap)
+
+    #카메라 클릭 했을 때 함수
+    def clickCamera(self):
+        if self.isCameraOn == False:
+            self.btn_Camera.setStyleSheet("background-color: rgb(0, 255, 0);")
+            self.isCameraOn = True
+
+            self.cameraStart()
+
+        else:
+            self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+            self.isCameraOn = False
+
+            self.cameraStop()
+
+    #카메라 start 함수
+    def cameraStart(self):
+        self.camera.running = True
+        self.camera.start()
+        self.video = cv2.VideoCapture(-1)
+
+    #카메라 stop 함수
+    def cameraStop(self):
+        self.camera.running = False
+        self.video.release
+
 
     # 버튼 눌러서 tab 변경 
     def change_page(self, index):
@@ -122,19 +209,18 @@ class WindowClass(QMainWindow, from_class):
 
     ###############LOG 함수#################
 
-    def setup_table(self): # 임시로 데이터 넣어놓을게요 DB랑 연결해야함
-        data = [
-            ["재니", "Door Lock", "Face ID", "OPEN", "2025-02-13"],
-            ["-", "LED", "Switch", "OFF", "2025-02-13"],
-            ["-", "Window", "GUI", "OPEN", "2025-02-13"],
-            ["-", "Garage", "GUI", "CLOSE", "2025-02-13"],
-            ["재니", "Door Lock", "Smart Key", "OPEN", "2025-02-12"],
-        ]
-
-        self.tableWidget.setRowCount(0)  # 기존 행 삭제
+    def setup_table(self): 
+        cursor = self.remote.cursor()
+        cursor.execute("SELECT * FROM smartHomeLog;")
+        data = cursor.fetchall()  # 결과 가져오기
         
         for row in data:
             self.add_row(row)
+
+
+    def close_connection(self):
+        self.cursor.close()
+        self.connection.close()
 
     def add_row(self, data):
         row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
@@ -144,8 +230,79 @@ class WindowClass(QMainWindow, from_class):
             item = QTableWidgetItem(value)  # 아이템 생성
             item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
             self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
+
+    def filter_table(self):
+        """선택한 category, status, date 범위에 따라 테이블 필터링"""
+        selected_category = self.categoryBox.currentText()
+        selected_status = self.statusBox.currentText()
+        start_date = self.dateStart.currentText()
+        end_date = self.dateEnd.currentText()
+
+        if start_date > end_date: # 날짜 순서 바꾸면 스왑값으로 적용
+            start_date, end_date = end_date, start_date
+
+        for row in range(self.tableWidget.rowCount()):
+            category_item = self.tableWidget.item(row, 1)  # category 열
+            status_item = self.tableWidget.item(row, 3)  # status 열
+            date_item = self.tableWidget.item(row, 4)  # date 열
+
+            if category_item and status_item and date_item:
+                category_text = category_item.text()
+                status_text = status_item.text()
+                date_text = date_item.text()
+
+                # 날짜 비교
+                if start_date == end_date:
+                    is_in_date_range = (date_text == start_date)  # 특정 날짜만 선택
+                
+                else:
+                    is_in_date_range = start_date <= date_text <= end_date  # 범위 선택
+
+                # 필터 조건 적용 (All이면 해당 필터 무시)
+                category_match = (selected_category == "All" or category_text == selected_category)
+                status_match = (selected_status == "All" or status_text == selected_status)
+
+                # 모든 조건을 만족해야 행이 보임
+                self.tableWidget.setRowHidden(row, not (category_match and status_match and is_in_date_range))
     
     ###############LOG 함수#################
+
+
+    ############### USER 함수 ##############
+    def userSearch(self):
+        params = ""
+
+        name = self.editName.text()
+
+        if name != "":
+            params = "WHERE name = '" + name + "'"
+
+        cursor = self.remote.cursor()
+        cursor.execute(f"SELECT * FROM users {params}")
+        results = cursor.fetchall()
+        
+        for result in results:
+            row = self.tableWidget_2.rowCount()
+            self.tableWidget_2.insertRow(row)
+
+            checkbox = QCheckBox()
+            widget = QWidget()
+            layout = QHBoxLayout()
+            layout.addWidget(checkbox)
+            layout.setAlignment(Qt.AlignCenter)  # 체크박스를 가운데 정렬
+            layout.setContentsMargins(0, 0, 0, 0)
+            widget.setLayout(layout)
+            self.tableWidget_2.setCellWidget(row, 0, widget)
+
+            # 사용자 정보 추가
+            self.tableWidget_2.setItem(row, 1, QTableWidgetItem(str(result[1])))
+            self.tableWidget_2.setItem(row, 2, QTableWidgetItem(str(result[4])))
+            self.tableWidget_2.setItem(row, 3, QTableWidgetItem(str(result[5])))
+            self.tableWidget_2.setItem(row, 4, QTableWidgetItem(str(result[6])))
+            self.tableWidget_2.setItem(row, 5, QTableWidgetItem(str('master' if result[3] else 'normal')))
+            self.tableWidget_2.setItem(row, 6, QTableWidgetItem(str(result[6])))
+            self.tableWidget_2.setItem(row, 7, QTableWidgetItem(str(result[7])))
+    ############### /USER 함수 #############
 
 
 if __name__ == "__main__":
@@ -153,5 +310,4 @@ if __name__ == "__main__":
     myWindows = WindowClass()
     myWindows.show()
     sys.exit(app.exec_())
-
 
