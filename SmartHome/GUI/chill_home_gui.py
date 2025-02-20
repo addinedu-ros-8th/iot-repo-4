@@ -12,6 +12,7 @@ import cv2
 from userAdd import UserWindow
 from Users_VehicleInformation import VehicleWindow
 from userUpdate import UserUpdateWindow
+import requests
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
@@ -90,10 +91,10 @@ class WindowClass(QMainWindow, from_class):
         self.update_time()
 
         # 슬라이더 설정
-        self.setup_slider(self.slider_led)
-        self.setup_slider(self.slider_garage)
-        self.setup_slider(self.slider_door)
-        self.setup_slider(self.slider_window)
+        self.setup_slider(self.slider_led, "led")
+        self.setup_slider(self.slider_garage, "garage")
+        self.setup_slider(self.slider_door, "door")
+        self.setup_slider(self.slider_window, "window")
 
         self.remote = mysql.connector.connect(
             host="database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -169,12 +170,12 @@ class WindowClass(QMainWindow, from_class):
             print("실패")
 
 
-    def setup_slider(self, slider):
+    def setup_slider(self, slider, io):
         """ 슬라이더 공통 설정 """
         slider.setStyleSheet(self.get_style(0))  # 초기 스타일 설정
-        slider.mousePressEvent = lambda event, s=slider: self.toggle_slider(event, s)  # 공통 이벤트 핸들러 적용
+        slider.mousePressEvent = lambda event, s=slider: self.toggle_slider(event, s, io)  # 공통 이벤트 핸들러 적용
 
-    def toggle_slider(self, event, slider):
+    def toggle_slider(self, event, slider, io):
         """ 슬라이더 클릭 시 ON/OFF 전환 """
         if slider.value() == 0:
             new_value = 1
@@ -185,6 +186,11 @@ class WindowClass(QMainWindow, from_class):
         slider.setStyleSheet(self.get_style(new_value))
 
         super().mousePressEvent(event)
+
+        response = requests.post( "http://127.0.0.1:9000/send" , json={"io": io, "value": new_value})
+        print("Server Response:", response.json())
+
+
 
     def get_style(self, value):
         """ ON/OFF 상태에 따라 스타일 변경 """
