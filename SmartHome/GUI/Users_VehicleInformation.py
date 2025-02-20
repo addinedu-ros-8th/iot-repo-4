@@ -12,7 +12,7 @@ import mysql.connector
 from PyQt5.QtCore import Qt
 
 # load UI file
-src = uic.loadUiType("/Users/jane/Desktop/dev/Project/iot-repo-4/SmartHome/GUI/Users_VehicleInformation.ui")[0]
+src = uic.loadUiType("Users_VehicleInformation.ui")[0]
 
 class WindowClass(QMainWindow, src):
     def __init__(self):
