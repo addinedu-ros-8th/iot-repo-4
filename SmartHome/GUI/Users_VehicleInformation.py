@@ -1,9 +1,8 @@
 '''
 차량 정보 조회 ui의 py 파일입니다.
-현재 디비 테이블로 연동과 add 버튼 완성하였습니다.
-
-일차원적인 수정과 삭제 기능을 완료하였습니다.
-예외처리는 하지 않아서 다음에 다시 구현하겠습니다 ~
+db 연동, add, update, delete 기능 완성하였습니다.
+add 중복처리 하였습니다.
+<구현완료>
 '''
 
 import sys
@@ -13,7 +12,7 @@ import mysql.connector
 from PyQt5.QtCore import Qt
 
 # load UI file
-src = uic.loadUiType("/Users/jane/Desktop/dev/Project/iot-repo-4/SmartHome/GUI/Users_VehicleInformation.ui")[0]
+src = uic.loadUiType("Users_VehicleInformation.ui")[0]
 
 class WindowClass(QMainWindow, src):
     def __init__(self):
@@ -66,33 +65,37 @@ class WindowClass(QMainWindow, src):
     def addInfo(self):
         # Collect vehicle plate number from the text input
         plateNumber = self.lineNumber.text()
-        
-        '''need to revise'''
-        # If plateNumber already exist -> 'warning' already exist
-        #if plateNumber
+        # Blank the QLineEdit
+        self.lineNumber.clear()
 
-
-        # Insert the plate number into the database
+        # Check if the plate number already exists in the database
         cursor = self.remote.cursor()
-        cursor.execute(f"INSERT INTO numberPlates (numberPlate) VALUES ({plateNumber})")
-
-        self.remote.commit()  # Commit the transaction
-
-        # Refresh the table to show the updated data
-        self.showData()
+        cursor.execute("SELECT * FROM numberPlates WHERE numberPlate = %s", (plateNumber,))
+        existing_plate = cursor.fetchone()
+        
+        if existing_plate:
+            # If the plate number already exists, show a warning
+            QMessageBox.warning(self, 'Warning', 'This plate number already exists!')
+        else:
+            # Insert data (plateNumber) into the database
+            cursor.execute(f"INSERT INTO numberPlates (numberPlate) VALUES ({plateNumber})")
+            self.remote.commit()  # Commit the transaction
+            self.showData() # updated to Table
     '''------------------------------------------------------------------------------'''
     '''UPDATE DATA'''
-
     def updateInfo(self):
+        # ONLY CHECKED ROW's plateNumber will be updated
         cursor = self.remote.cursor()
         rowCount = self.table.rowCount()
         
+        # Find the checked checkbox in current table
         for rowIndex in range(rowCount):
             checkbox = self.table.cellWidget(rowIndex, 0)  # Get checkbox 
             if checkbox.isChecked(): #get specific row of clicked check box
                 oldPlateNumber = self.table.item(rowIndex, 1).text()
                 newPlateNumber, ok = QInputDialog.getText(self, 'Modify Plate Number', 'New Plate Number:')
-
+                
+                # update to database
                 if newPlateNumber and ok:
                     cursor.execute("UPDATE numberPlates SET numberPlate = %s WHERE numberPlate = %s", (newPlateNumber, oldPlateNumber))
                     self.remote.commit()
@@ -104,6 +107,7 @@ class WindowClass(QMainWindow, src):
         cursor = self.remote.cursor()
         rowCount = self.table.rowCount()
 
+        # If a row of checkbox is checked -> delete
         for rowIndex in range(rowCount):
             checkbox = self.table.cellWidget(rowIndex, 0)  # Get checkbox 
             plateNumber = self.table.item(rowIndex, 1).text()  # Get the plate number
@@ -126,10 +130,6 @@ if __name__ == "__main__":
     mywindows = WindowClass()
     mywindows.show()
 
-<<<<<<< HEAD
     sys.exit(app.exec_())
 
     
-=======
-    sys.exit(app.exec_())
->>>>>>> main
