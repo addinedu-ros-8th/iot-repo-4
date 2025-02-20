@@ -126,6 +126,10 @@ if __name__ == "__main__":
     mywindows = WindowClass()
     mywindows.show()
 
+<<<<<<< HEAD
     sys.exit(app.exec_())
 
     
+=======
+    sys.exit(app.exec_())
+>>>>>>> main
