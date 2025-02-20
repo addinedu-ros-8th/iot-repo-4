@@ -192,7 +192,7 @@
     </property>
    </item>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>241</x>
@@ -259,17 +259,42 @@
       </item>
       <item>
        <property name="text">
-        <string>OPEN</string>
+        <string>On</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>CLOSE</string>
+        <string>Open</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>OFF</string>
+        <string>Close</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Danger</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Safe</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Warnning</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>DOORLOCK</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Off</string>
        </property>
       </item>
      </widget>
@@ -293,7 +318,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Door Lock</string>
+        <string>Door</string>
        </property>
       </item>
       <item>
@@ -313,7 +338,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Gas Alert</string>
+        <string>Gas</string>
        </property>
       </item>
      </widget>
