@@ -14,7 +14,7 @@ from PyQt5.QtCore import Qt
 # load UI file
 src = uic.loadUiType("Users_VehicleInformation.ui")[0]
 
-class WindowClass(QMainWindow, src):
+class VehicleWindow(QMainWindow, src):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Login.ui 로드
@@ -127,7 +127,7 @@ class WindowClass(QMainWindow, src):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mywindows = WindowClass()
+    mywindows = VehicleWindow()
     mywindows.show()
 
     sys.exit(app.exec_())
