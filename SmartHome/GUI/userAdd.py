@@ -25,6 +25,9 @@ class UserWindow(QMainWindow, from_class):
         )
         self.idCheckFlag = False
 
+        self.editPasswd.setEchoMode(QLineEdit.Password)
+        self.editRePasswd.setEchoMode(QLineEdit.Password)
+
         self.btnExist.clicked.connect(self.checkId)
         self.btnNext.clicked.connect(self.saveUsers)
 
