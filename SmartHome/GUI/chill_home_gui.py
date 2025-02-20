@@ -10,10 +10,13 @@ import mysql.connector
 import time
 import cv2
 from userAdd import UserWindow
+from Users_VehicleInformation import VehicleWindow
+from userUpdate import UserUpdateWindow
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
 userAddUi = uic.loadUiType("userAdd.ui")[0]
+vehicleUi = uic.loadUiType("Users_VehicleInformation.ui")[0]
 
 
 class Camera(QThread):
@@ -75,6 +78,9 @@ class WindowClass(QMainWindow, from_class):
         self.btn_user_3.clicked.connect(lambda: self.change_page(2))
 
         self.btnAdd.clicked.connect(self.userAdd)
+        self.btnVehicle.clicked.connect(self.vehicleInfo)
+        self.btnUpdate.clicked.connect(self.userUpdate)
+        self.btnDelete.clicked.connect(self.userDelete)
 
 
         # 시간 업데이트 기능 추가
@@ -274,6 +280,8 @@ class WindowClass(QMainWindow, from_class):
 
     ############### USER 함수 ##############
     def userSearch(self):
+        self.tableWidget_2.setRowCount(0)
+
         params = ""
 
         name = self.editName.text()
@@ -290,13 +298,8 @@ class WindowClass(QMainWindow, from_class):
             self.tableWidget_2.insertRow(row)
 
             checkbox = QCheckBox()
-            widget = QWidget()
-            layout = QHBoxLayout()
-            layout.addWidget(checkbox)
-            layout.setAlignment(Qt.AlignCenter)  # 체크박스를 가운데 정렬
-            layout.setContentsMargins(0, 0, 0, 0)
-            widget.setLayout(layout)
-            self.tableWidget_2.setCellWidget(row, 0, widget)
+            checkbox.setChecked(False)
+            self.tableWidget_2.setCellWidget(row, 0, checkbox)
 
             # 사용자 정보 추가
             self.tableWidget_2.setItem(row, 1, QTableWidgetItem(str(result[1])))
@@ -305,13 +308,65 @@ class WindowClass(QMainWindow, from_class):
             self.tableWidget_2.setItem(row, 4, QTableWidgetItem(str(result[6])))
             self.tableWidget_2.setItem(row, 5, QTableWidgetItem(str('master' if result[3] else 'normal')))
             self.tableWidget_2.setItem(row, 6, QTableWidgetItem(str(result[6])))
-            self.tableWidget_2.setItem(row, 7, QTableWidgetItem(str(result[7])))
+            self.tableWidget_2.setItem(row, 6, QTableWidgetItem(str(result[7])))
+            self.tableWidget_2.setItem(row, 7, QTableWidgetItem(str(result[8])))
     ############### /USER 함수 #############
+
+    def vehicleInfo(self):
+        self.main_window = VehicleWindow()
+        self.main_window.show()
 
 
     def userAdd(self):
         self.main_window = UserWindow()
         self.main_window.show()
+
+    def userUpdate(self):
+        ids = list()
+
+        cursor = self.remote.cursor()
+        rowCount = self.tableWidget_2.rowCount()
+
+        for rowIndex in range(rowCount):
+            checkbox = self.tableWidget_2.cellWidget(rowIndex, 0)
+            id = self.tableWidget_2.item(rowIndex, 1).text()
+            if checkbox and checkbox.isChecked():
+                ids.append(id)
+
+        if not ids or len(ids) > 1:
+            QMessageBox.information(self, "Update users", "수정할 유저는 한개만 선택 가능합니다.")
+            return
+        
+        self.main_window = UserUpdateWindow(ids)
+        self.main_window.show()
+
+    def userDelete(self):
+        ids = list()
+
+        cursor = self.remote.cursor()
+        rowCount = self.tableWidget_2.rowCount()
+
+        for rowIndex in range(rowCount):
+            checkbox = self.tableWidget_2.cellWidget(rowIndex, 0)
+            id = self.tableWidget_2.item(rowIndex, 1).text()
+            if checkbox and checkbox.isChecked():
+                ids.append(id)
+
+        if not ids:  # 삭제할 유저가 없으면 종료
+            QMessageBox.information(self, "Delete users", "삭제할 유저를 선택하세요.")
+            return
+
+        retval = QMessageBox.question(self, 'Delete users', str(len(ids)) + '개의 유저를 삭제하시겠습니까?',
+                                QMessageBox.Yes | QMessageBox.No)
+        
+        if retval == QMessageBox.Yes:
+            cursor.execute(f"DELETE FROM users WHERE id IN ({','.join(['%s'] * len(ids))})", ids)
+            self.remote.commit()
+        else:
+            return
+
+        self.userSearch()
+        
 
 
 if __name__ == "__main__":
