@@ -30,11 +30,11 @@ class LoginWindow(QMainWindow, LoginUI):
         passwd = self.lineEdit_2.text()
 
         cursor = self.remote.cursor()
-        cursor.execute(f"SELECT COUNT(*) as cnt FROM users WHERE id = '{id}' and password = '{passwd}'")
+        cursor.execute(f"SELECT * FROM users WHERE id = '{id}' and password = SHA2('{passwd}', 256)")
         result = cursor.fetchone()
 
         if result[0] > 0:
-            self.main_window = WindowClass()  # Main.py의 WindowClass 실행
+            self.main_window = WindowClass(result)  # Main.py의 WindowClass 실행
             self.main_window.show()  # Main.ui를 실행
             self.close()  # 현재 로그인 창 닫기
         else:
