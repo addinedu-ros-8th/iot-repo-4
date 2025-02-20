@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # model
-./SmartHome/GUI/model/*
+SmartHome/GUI/model/*
