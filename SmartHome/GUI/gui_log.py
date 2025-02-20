@@ -58,7 +58,21 @@ class WindowClass(QMainWindow, from_class) :
         
     def setup_table(self): 
         cursor = self.remote.cursor()
-        cursor.execute("SELECT * FROM smartHomeLog;")
+        query = """
+        SELECT 
+            io.ioName AS NAME, 
+            statusCategory.status AS CATEGORY, 
+            logWay.way AS WAY, 
+            ioStatus.status AS STATUS, 
+            smartHomeLog.logDate AS DATE
+        FROM 
+            smartHomeLog
+        JOIN io ON smartHomeLog.ioId = io.uid
+        JOIN ioStatus ON smartHomeLog.statusId = ioStatus.uid
+        JOIN logWay ON smartHomeLog.wayId = logWay.uid
+        JOIN statusCategory ON ioStatus.status = statusCategory.uid;
+        """
+        cursor.execute(query)
         data = cursor.fetchall()  # 결과 가져오기
         
         for row in data:
