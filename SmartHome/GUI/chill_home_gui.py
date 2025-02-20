@@ -7,14 +7,45 @@ from PyQt5 import uic
 import urllib.request
 from PyQt5.QtGui import *
 import mysql.connector
+import time
+import cv2
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
+
+
+class Camera(QThread):
+    update = pyqtSignal()
+
+    def __init__(self, sec=0, parent = None):
+        super().__init__()
+        self.main = parent
+        self.running = True
+
+    def run(self):
+        while self.running == True:
+            self.update.emit()
+            time.sleep(0.04)
+
+    def stop(self):
+        self.running = False
 
 class WindowClass(QMainWindow, from_class):
     def __init__(self, userInfo = None):
         super().__init__()
         self.setupUi(self)
+
+
+        #카메라 상태 확인 및 객체 생성
+        self.isCameraOn = False
+        self.pixmap = QPixmap()
+        self.camera = Camera(self)
+        self.camera.daemon = True
+
+        #카메라 온오프 버튼
+        self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+        self.btn_Camera.clicked.connect(self.clickCamera)
+        self.camera.update.connect(self.updateCamera)
         
         #chillguy 이미지
         self.pixmap = QPixmap()
@@ -64,38 +95,46 @@ class WindowClass(QMainWindow, from_class):
         self.btnSearch.clicked.connect(self.userSearch)
         self.editName.returnPressed.connect(self.userSearch)
 
-        ########################### LOG #############################
-        # 인덱스(행 번호) 숨기기
-        self.tableWidget.verticalHeader().setVisible(False)
+    # 카메라 On    
+    def updateCamera(self):
+        retval, image = self.video.read()
 
-        # 행 구분선(그리드) 숨기기
-        self.tableWidget.setShowGrid(False)
+        if retval:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # 테이블 초기화
-        self.setup_table()
+            h, w, c = image.shape
+            qimage = QImage(image.data, w, h, w*c, QImage.Format_RGB888)
 
-        # 카테고리 콤보박스 & 테이블 연결
-        self.categoryBox.currentTextChanged.connect(self.filter_table)
+            self.pixmap = self.pixmap.fromImage(qimage)
+            self.pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.height())
 
-        # status & table 연결
-        self.statusBox.currentTextChanged.connect(self.filter_table)
+            self.label_Camera.setPixmap(self.pixmap)
 
-        # 날짜 범위 설정
-        today = QDate.currentDate()
-        start_date = today.addYears(-1)  # 1년 전
-        self.date_range = [start_date.addDays(i) for i in range((today.toJulianDay() - start_date.toJulianDay()) + 1)]
-        date_strings = sorted([date.toString("yyyy-MM-dd") for date in self.date_range], reverse=True)
+    #카메라 클릭 했을 때 함수
+    def clickCamera(self):
+        if self.isCameraOn == False:
+            self.btn_Camera.setStyleSheet("background-color: rgb(0, 255, 0);")
+            self.isCameraOn = True
 
-        self.dateStart.addItems(date_strings)
-        self.dateEnd.addItems(date_strings)
-        self.dateStart.setCurrentIndex(0)  # 기본값: 가장 빠른 날짜
-        self.dateEnd.setCurrentIndex(0)  # 기본값: 현재 날짜
+            self.cameraStart()
 
+        else:
+            self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+            self.isCameraOn = False
 
-        # time & table 연결
-        self.dateStart.currentTextChanged.connect(self.filter_table)
-        self.dateEnd.currentTextChanged.connect(self.filter_table)
-        ########################### LOG #############################
+            self.cameraStop()
+
+    #카메라 start 함수
+    def cameraStart(self):
+        self.camera.running = True
+        self.camera.start()
+        self.video = cv2.VideoCapture(-1)
+
+    #카메라 stop 함수
+    def cameraStop(self):
+        self.camera.running = False
+        self.video.release
+
 
     # 버튼 눌러서 tab 변경 
     def change_page(self, index):
@@ -271,5 +310,4 @@ if __name__ == "__main__":
     myWindows = WindowClass()
     myWindows.show()
     sys.exit(app.exec_())
-
 

@@ -306,15 +306,6 @@
        <height>91</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border-radius: 10px;  /* 모서리 둥글게 */
-    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
-    background-color: palette(button); /* 기본 버튼 색 유지 */
-    color: palette(button-text); /* 기본 글자 색 유지 */
-}
-</string>
-     </property>
      <property name="text">
       <string>LOG</string>
      </property>
@@ -599,7 +590,29 @@ border-radius: 5px;  /* 모서리 둥글게 */
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QOpenGLWidget" name="openGLWidget">
+    <widget class="QPushButton" name="btn_Camera">
+     <property name="geometry">
+      <rect>
+       <x>115</x>
+       <y>390</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+    border-radius: 10px;  /* 모서리 둥글게 */
+    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
+    background-color: palette(button); /* 기본 버튼 색 유지 */
+    color: palette(button-text); /* 기본 글자 색 유지 */
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Camera">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -607,6 +620,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
        <width>511</width>
        <height>391</height>
       </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
     <zorder>label_5</zorder>
@@ -625,7 +641,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <zorder>slider_window</zorder>
     <zorder>slider_led</zorder>
     <zorder>label_2</zorder>
-    <zorder>openGLWidget</zorder>
+    <zorder>btn_Camera</zorder>
+    <zorder>label_Camera</zorder>
    </widget>
    <widget class="QWidget" name="page_2">
     <property name="enabled">
