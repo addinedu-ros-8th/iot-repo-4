@@ -259,6 +259,21 @@
       </item>
       <item>
        <property name="text">
+        <string>Add</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>On</string>
        </property>
       </item>
