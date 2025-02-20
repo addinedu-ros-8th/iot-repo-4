@@ -9,9 +9,11 @@ from PyQt5.QtGui import *
 import mysql.connector
 import time
 import cv2
+from userAdd import UserWindow
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
+userAddUi = uic.loadUiType("userAdd.ui")[0]
 
 
 class Camera(QThread):
@@ -71,6 +73,8 @@ class WindowClass(QMainWindow, from_class):
         self.btn_log_3.clicked.connect(lambda: self.change_page(1))
         self.btn_user_2.clicked.connect(lambda: self.change_page(2))
         self.btn_user_3.clicked.connect(lambda: self.change_page(2))
+
+        self.btnAdd.clicked.connect(self.userAdd)
 
 
         # 시간 업데이트 기능 추가
@@ -303,6 +307,11 @@ class WindowClass(QMainWindow, from_class):
             self.tableWidget_2.setItem(row, 6, QTableWidgetItem(str(result[6])))
             self.tableWidget_2.setItem(row, 7, QTableWidgetItem(str(result[7])))
     ############### /USER 함수 #############
+
+
+    def userAdd(self):
+        self.main_window = UserWindow()
+        self.main_window.show()
 
 
 if __name__ == "__main__":
