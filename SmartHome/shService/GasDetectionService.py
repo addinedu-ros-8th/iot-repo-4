@@ -3,7 +3,7 @@ import time
 
 class GasDetectionService:
     def __init__(self):
-        self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
+        self.ser = serial.Serial(port='/dev/cu.usbmodem1124201 ', baudrate=9600, timeout=1)
         self.window_opened = False
 
     def gasDetectionSerial(self):
