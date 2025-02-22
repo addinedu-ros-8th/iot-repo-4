@@ -33,6 +33,8 @@ class WindowClass(QMainWindow, from_class):
         self.btnUserUpdate.clicked.connect(self.userUpdate)
         self.btnUserDelete.clicked.connect(self.userDelete)
 
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
 
     def userSearch(self):
         self.tableWidget.setRowCount(0)
