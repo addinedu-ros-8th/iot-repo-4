@@ -86,7 +86,7 @@ class UserWindow(QMainWindow, from_class):
             QMessageBox.warning(self, "Save Users", "Rfid Key를 입력해주세요.")
             return
         
-        sql = "INSERT INTO users (id, password, level, name, birthday, phone, rfidKey, createDate) VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())"
+        sql = "INSERT INTO users (id, password, level, name, birthday, phone, rfidKey, createDate) VALUES (%s, SHA2('%s', 256), %s, %s, %s, %s, %s, NOW())"
 
         cursor = self.remote.cursor()
         cursor.execute(sql, (id, passwd, 0, name, birthday, phone, rfidKey))
