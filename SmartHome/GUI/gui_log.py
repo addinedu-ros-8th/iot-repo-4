@@ -58,7 +58,9 @@ class LogWindow(QMainWindow, from_class) :
         
     def setup_table(self): 
         cursor = self.remote.cursor()
-        query = "SELECT uid, gasConcentration, gasSafetyLevel FROM gasLog;"
+        query = """
+        SELECT * FROM smartHomeLog;
+        """
         cursor.execute(query)
         data = cursor.fetchall()  # 결과 가져오기
         

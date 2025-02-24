@@ -10,29 +10,25 @@ app = Flask(__name__)
 @app.route('/send', methods=['POST'])
 def receive_data():
     data = request.get_json()
-    print(f"Received data: {data}")
     if data['io'] == "led":
-        msg = "led ON" if data['value'] == 1 else "led OFF"
-
-        position = "ON" if data['value'] == 1 else "OFF"
+        position = "LO" if data['value'] == 1 else "LF"
         url = f"http://{HOST}:{PORT}/{position}"
-        try:
-            response = requests.get(url)
-            if response.status_code == 200:
-                print(f"Servo moved to {90 if position == 'H' else 0} degrees.")
-            else:
-                print("Failed to control servo:", response.status_code)
-        except Exception as e:
-            print("Error:", e)
+        response = requests.get(url)
 
     elif data['io'] == "garage":
         msg = "garage open" if data['value'] == 1 else "garage close"
+        response = {"message": "Data received", "received": msg}
     elif data['io'] == "door":
         msg = "door open" if data['value'] == 1 else "door close"
+
+        position = "DO" if data['value'] == 1 else "DC"
+        url = f"http://{HOST}:{PORT}/{position}"
+        response = requests.get(url)
+
     elif data['io'] == "window":
         msg = "window open" if data['value'] == 1 else "window close"
-        
-    response = {"message": "Data received", "received": msg}
+        response = {"message": "Data received", "received": msg}
+
     return jsonify(response), 200
 
 if __name__ == '__main__':

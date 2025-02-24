@@ -114,17 +114,17 @@ void loop() {
         }
 
         // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
+        if (currentLine.endsWith("GET /DO")) {
           servo.write(90);  // GET /H turns the LED on
         }
-        if (currentLine.endsWith("GET /L")) {
+        if (currentLine.endsWith("GET /DC")) {
           servo.write(0);  // GET /L turns the LED off
         }
 
-        if (currentLine.endsWith("GET /ON")) {
+        if (currentLine.endsWith("GET /LO")) {
           digitalWrite(LEDPIN, HIGH);  // GET /H turns the LED on
         }
-        if (currentLine.endsWith("GET /OFF")) {
+        if (currentLine.endsWith("GET /LF")) {
           digitalWrite(LEDPIN, LOW);  // GET /L turns the LED off
         }
       }
