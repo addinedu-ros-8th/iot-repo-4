@@ -163,7 +163,7 @@ class WindowClass(QMainWindow, from_class):
     #카메라 stop 함수
     def cameraStop(self):
         self.camera.running = False
-        self.video.release()
+        self.video.release() #Test
 
         #카메라 화면 검은색으로 적용
         black_pixmap = QPixmap(self.label_Camera.size())
