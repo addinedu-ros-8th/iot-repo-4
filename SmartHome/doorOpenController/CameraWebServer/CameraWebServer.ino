@@ -36,8 +36,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char *ssid = "U+NetC4D4";
-const char *password = "3G958@6134";
+const char *ssid = "AIE_509_2.4G";
+const char *password = "addinedu_class1";
 
 void startCameraServer();
 void setupLedFlash(int pin);

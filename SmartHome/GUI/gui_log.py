@@ -9,7 +9,7 @@ import mysql.connector
 
 from_class = uic.loadUiType("Log.ui")[0]
 
-class WindowClass(QMainWindow, from_class) :
+class LogWindow(QMainWindow, from_class) :
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -134,7 +134,7 @@ class WindowClass(QMainWindow, from_class) :
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    myWindows = WindowClass()
+    myWindows = LogWindow()
     myWindows.show()
 
     sys.exit(app.exec_())
