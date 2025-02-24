@@ -7,7 +7,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import *
 import mysql.connector
 
-from_class = uic.loadUiType("gui_log.ui")[0]
+from_class = uic.loadUiType("gui_log2.ui")[0]
 
 class WindowClass(QMainWindow, from_class) :
     def __init__(self):
@@ -59,18 +59,7 @@ class WindowClass(QMainWindow, from_class) :
     def setup_table(self): 
         cursor = self.remote.cursor()
         query = """
-        SELECT 
-            io.ioName AS NAME, 
-            statusCategory.status AS CATEGORY, 
-            logWay.way AS WAY, 
-            ioStatus.status AS STATUS, 
-            smartHomeLog.logDate AS DATE
-        FROM 
-            smartHomeLog
-        JOIN io ON smartHomeLog.ioId = io.uid
-        JOIN ioStatus ON smartHomeLog.statusId = ioStatus.uid
-        JOIN logWay ON smartHomeLog.wayId = logWay.uid
-        JOIN statusCategory ON ioStatus.status = statusCategory.uid;
+        SELECT * FROM gasLog;
         """
         cursor.execute(query)
         data = cursor.fetchall()  # 결과 가져오기
