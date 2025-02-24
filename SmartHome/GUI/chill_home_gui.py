@@ -68,12 +68,6 @@ class WindowClass(QMainWindow, from_class):
         scaled_pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.width())
         self.label_Camera.setPixmap(scaled_pixmap)
 
-        #chiily guy 투명도 적용
-        # opacity_effect = QGraphicsOpacityEffect()
-        # opacity_effect.setOpacity(0.3)
-        # self.label_chillguy.setGraphicsEffect(opacity_effect)
-
-
         # 시간 업데이트 기능 추가
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_time)
@@ -98,14 +92,13 @@ class WindowClass(QMainWindow, from_class):
 
 
     #Users tab 열기
-    def open_users_window(self):
-        self.main_window = UserWindow()
-        self.main_window.show()
-        self.close()
+    def open_usertab(self):
+        self.users_window = UsersWindow()
+        self.users_window.show()
 
 
     #LOG tab 열기
-    def open_log_window(self):
+    def open_logtab(self):
         self.log_window = LogWindow()
         self.log_window.show()
 
