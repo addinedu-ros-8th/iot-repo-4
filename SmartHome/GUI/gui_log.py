@@ -7,7 +7,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import *
 import mysql.connector
 
-from_class = uic.loadUiType("gui_log2.ui")[0]
+from_class = uic.loadUiType("Log.ui")[0]
 
 class WindowClass(QMainWindow, from_class) :
     def __init__(self):
