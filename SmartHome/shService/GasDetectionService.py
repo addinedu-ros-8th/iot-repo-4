@@ -1,9 +1,21 @@
 import serial
 import time
+import mysql.connector
+
+remote = mysql.connector.connect(
+    host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
+    user = "chillHome",
+    password = "addinedu1!",
+    database = "chillHome"
+)
+
+cursor = remote.cursor()
+cursor.execute("")
+records = cursor.fetchall()
 
 class GasDetectionService:
     def __init__(self):
-        self.ser = serial.Serial(port='/dev/cu.usbmodem112301', baudrate=9600, timeout=1)
+        self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
 
     def gasDetectionSerial(self):
         try:
@@ -18,9 +30,7 @@ class GasDetectionService:
                         if gas_level > 700:
                             print("창문이 열립니다 (서보모터 90도)")
                         else:
-                            print("창문이 닫힙니다 (서보모터 0도)")
-
-                    time.sleep(0.5)
+                            print("창문 닫힌상태 (서보모터 0도)")
 
         except KeyboardInterrupt:
             print("프로그램 종료")
