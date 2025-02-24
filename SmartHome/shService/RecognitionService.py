@@ -234,7 +234,7 @@ try:
 
             if authentication_success:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                move_servo("H")
+                move_servo("DO")
 
                 text = "Auth Success"
                 text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
@@ -244,7 +244,7 @@ try:
                 cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             else:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-                move_servo("L")
+                move_servo("DC")
 
                 text = "Auth fail"
                 text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]

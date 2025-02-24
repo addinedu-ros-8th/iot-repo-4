@@ -169,12 +169,13 @@ class WindowClass(QMainWindow, from_class):
         slider.setValue(new_value)
         slider.setStyleSheet(self.get_style(new_value))
 
-        if io == "camera":
-            self.clickCamera()
-
         super().mousePressEvent(event)
 
-        response = requests.post( "http://127.0.0.1:9000/send" , json={"io": io, "value": new_value})
+        if io == "camera":
+            self.clickCamera()
+            return
+
+        response = requests.post( "http://192.168.219.127:9000/send" , json={"io": io, "value": new_value})
         
         print("Server Response:", response.json())
 
