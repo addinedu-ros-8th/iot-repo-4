@@ -10,8 +10,7 @@ remote = mysql.connector.connect(
 )
 
 cursor = remote.cursor()
-cursor.execute("")
-records = cursor.fetchall()
+
 
 class GasDetectionService:
     def __init__(self):
@@ -27,6 +26,19 @@ class GasDetectionService:
                         gas_level = int(gas_data)
                         print(f"Gas Level: {gas_level}")
 
+                        # gasSafetyLevel 결정
+                        if gas_level <= 500:
+                            safety_level = 0 # safe
+                        elif gas_level <= 699:
+                            safety_level = 1 # warning
+                        else:
+                            safety_level = 2 # Danger
+
+                        # 데이터베이스에 삽입
+                        insert_query = "INSERT INTO gasLog (gasConcentration, gasSafetyLevel) VALUES (%s, %s)"
+                        cursor.execute(insert_query, (gas_level, safety_level))
+                        remote.commit()
+
                         if gas_level > 700:
                             print("창문이 열립니다 (서보모터 90도)")
                         else:
@@ -37,6 +49,8 @@ class GasDetectionService:
         
         finally:
             self.ser.close()
+            cursor.close()
+            remote.close()
             print("Serial port closed.")
 
 if __name__ == "__main__":
