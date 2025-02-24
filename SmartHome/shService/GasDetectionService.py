@@ -16,6 +16,9 @@ class GasDetectionService:
     def __init__(self):
         self.ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
 
+        self.window_opened = False  # 창문이 열렸는지 여부를 추적하는 변수
+        self.speaker_triggered = False  # 부저가 울렸는지 여부를 추적하는 변수
+
     def gasDetectionSerial(self):
         try:
             while True:
@@ -40,9 +43,19 @@ class GasDetectionService:
                         remote.commit()
 
                         if gas_level > 700:
-                            print("창문이 열립니다 (서보모터 90도)")
+                            if not self.window_opened:
+                                print("창문이 열립니다 (서보모터 90도)")
+                                self.window_opened = True
+
+                            if not self.speaker_triggered:
+                                print("부저가 울립니다")
+                                self.alarm_triggered = True
                         else:
-                            print("창문 닫힌상태 (서보모터 0도)")
+                            if self.window_opened:
+                                print("창문 닫힌상태 (서보모터 0도)")
+                                
+                            self.window_opened = False  # 창문 닫힘
+                            self.alarm_triggered = False  # 부저 꺼짐
 
         except KeyboardInterrupt:
             print("프로그램 종료")
