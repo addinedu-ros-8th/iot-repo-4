@@ -12,7 +12,7 @@ from_class = uic.loadUiType("Users.ui")[0]
 userAddUi = uic.loadUiType("userAdd.ui")[0]
 vehicleUi = uic.loadUiType("Users_VehicleInformation.ui")[0]
 
-class WindowClass(QMainWindow, from_class):
+class UsersWindow(QMainWindow, from_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -124,7 +124,7 @@ class WindowClass(QMainWindow, from_class):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mywindows = WindowClass()
+    mywindows = UsersWindow()
     mywindows.show()
 
     sys.exit(app.exec_())

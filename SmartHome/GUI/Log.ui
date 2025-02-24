@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>957</width>
-    <height>528</height>
+    <width>986</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="palette">
@@ -52,7 +52,7 @@
      <colorrole role="Dark">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -63,7 +63,7 @@
        <color alpha="255">
         <red>162</red>
         <green>151</green>
-        <blue>106</blue>
+        <blue>105</blue>
        </color>
       </brush>
      </colorrole>
@@ -150,19 +150,10 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="127">
+       <color alpha="128">
         <red>0</red>
         <green>0</green>
         <blue>0</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Accent">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
@@ -207,7 +198,7 @@
      <colorrole role="Dark">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -218,7 +209,7 @@
        <color alpha="255">
         <red>162</red>
         <green>151</green>
-        <blue>106</blue>
+        <blue>105</blue>
        </color>
       </brush>
      </colorrole>
@@ -305,19 +296,10 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="127">
+       <color alpha="128">
         <red>0</red>
         <green>0</green>
         <blue>0</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Accent">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
@@ -326,7 +308,7 @@
      <colorrole role="WindowText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -362,7 +344,7 @@
      <colorrole role="Dark">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -373,14 +355,14 @@
        <color alpha="255">
         <red>162</red>
         <green>151</green>
-        <blue>106</blue>
+        <blue>105</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Text">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -398,7 +380,7 @@
      <colorrole role="ButtonText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>122</red>
+        <red>121</red>
         <green>113</green>
         <blue>79</blue>
        </color>
@@ -460,19 +442,10 @@
      </colorrole>
      <colorrole role="PlaceholderText">
       <brush brushstyle="SolidPattern">
-       <color alpha="127">
-        <red>122</red>
-        <green>113</green>
-        <blue>79</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="Accent">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>255</red>
-        <green>249</green>
-        <blue>227</blue>
+       <color alpha="128">
+        <red>0</red>
+        <green>0</green>
+        <blue>0</blue>
        </color>
       </brush>
      </colorrole>
@@ -482,32 +455,11 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="title">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>10</y>
-     <width>191</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <italic>true</italic>
-    </font>
-   </property>
-   <property name="text">
-    <string>CHILL HOME LOG</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>140</y>
+     <x>30</x>
+     <y>170</y>
      <width>931</width>
      <height>361</height>
     </rect>
@@ -659,15 +611,6 @@
         </color>
        </brush>
       </colorrole>
-      <colorrole role="Accent">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
      </active>
      <inactive>
       <colorrole role="WindowText">
@@ -811,15 +754,6 @@
          <red>0</red>
          <green>0</green>
          <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Accent">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
         </color>
        </brush>
       </colorrole>
@@ -969,15 +903,6 @@
         </color>
        </brush>
       </colorrole>
-      <colorrole role="Accent">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
-        </color>
-       </brush>
-      </colorrole>
      </disabled>
     </palette>
    </property>
@@ -1090,8 +1015,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>201</x>
-     <y>100</y>
+     <x>220</x>
+     <y>120</y>
      <width>741</width>
      <height>34</height>
     </rect>
@@ -1101,9 +1026,6 @@
      <widget class="QLabel" name="labelDate">
       <property name="text">
        <string>날짜</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -1127,9 +1049,6 @@
       <property name="text">
        <string>~</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
      </widget>
     </item>
     <item>
@@ -1139,9 +1058,6 @@
      <widget class="QLabel" name="labelStatus">
       <property name="text">
        <string>가스위험여부</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -1174,9 +1090,6 @@
       <property name="text">
        <string>인증방법</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-      </property>
      </widget>
     </item>
     <item>
@@ -1200,11 +1113,24 @@
     </item>
    </layout>
   </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>80</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>KumJok Home</string>
+   </property>
+  </widget>
   <widget class="QPushButton" name="btnUser">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>40</y>
+     <x>430</x>
+     <y>70</y>
      <width>40</width>
      <height>40</height>
     </rect>
@@ -1221,20 +1147,22 @@
     <string>user</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLabel" name="title">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>50</y>
-     <width>113</width>
-     <height>21</height>
+     <x>430</x>
+     <y>20</y>
+     <width>191</width>
+     <height>41</height>
     </rect>
    </property>
-   <property name="text">
-    <string>KumJok Home</string>
+   <property name="font">
+    <font>
+     <italic>true</italic>
+    </font>
    </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
+   <property name="text">
+    <string>CHILL HOME LOG</string>
    </property>
   </widget>
  </widget>
