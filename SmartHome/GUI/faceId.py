@@ -29,7 +29,7 @@ model.load_state_dict(torch.load(weight_path, map_location = device))
 model.eval()
 
 class WindowClass(QMainWindow, from_class):
-    def __init__(self, userId = 1):
+    def __init__(self, userId):
         super().__init__()
         self.setupUi(self)
         self.userId = userId
