@@ -14,27 +14,13 @@ from Users import UserWindow
 from Users_VehicleInformation import VehicleWindow
 from userUpdate import UserUpdateWindow
 import requests
+from Users import UsersWindow
+from gui_log import LogWindow
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
 LogUI = uic.loadUiType("Log.ui")[0]
 UsersUI = uic.loadUiType("Users.ui")[0]
-
-#Users class
-# class UsersWindow(QMainWindow, UsersUI):
-#     """ usertab 화면 """
-#     def __init__(self):
-#         super().__init__()
-#         self.setupUi(self)
-        
-
-
-#로그화면 class
-# class LogWindow(QMainWindow, LogUI):
-#     """ 로그 화면 """
-#     def __init__(self):
-#         super().__init__()
-#         self.setupUi(self)
 
 
 #카메라 class
@@ -61,12 +47,6 @@ class WindowClass(QMainWindow, from_class):
         super().__init__()
         self.setupUi(self)
 
-
-        #로그 탭으로 이동
-        self.btn_move_to_log.clicked.connect(self.open_log_window)
-        #Users 탭으로 이동
-        self.btn_move_to_users.clicked.connect(self.open_users_window)
-
         #카메라 상태 확인 및 객체 생성
         self.isCameraOn = False
         self.pixmap = QPixmap()
@@ -74,21 +54,24 @@ class WindowClass(QMainWindow, from_class):
         self.camera.daemon = True
 
         #카메라 온오프 버튼
-        self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
-        self.btn_Camera.clicked.connect(self.clickCamera)
+        # self.btn_Camera.clicked.connect(self.clickCamera)
         self.camera.update.connect(self.updateCamera)
+
+        #User Log Tab 이동
+        self.btn_move_to_users.clicked.connect(self.open_usertab)
+        self.btn_move_to_log.clicked.connect(self.open_logtab)
         
         #chillguy 이미지
         self.pixmap = QPixmap()
         self.pixmap.load("./data/chillguy.png")
         #이미지 크기 조정
-        scaled_pixmap = self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
-        self.label_chillguy.setPixmap(scaled_pixmap)
+        scaled_pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.width())
+        self.label_Camera.setPixmap(scaled_pixmap)
 
         #chiily guy 투명도 적용
-        opacity_effect = QGraphicsOpacityEffect()
-        opacity_effect.setOpacity(0.3)
-        self.label_chillguy.setGraphicsEffect(opacity_effect)
+        # opacity_effect = QGraphicsOpacityEffect()
+        # opacity_effect.setOpacity(0.3)
+        # self.label_chillguy.setGraphicsEffect(opacity_effect)
 
 
         # 시간 업데이트 기능 추가
@@ -102,6 +85,8 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_garage, "garage")
         self.setup_slider(self.slider_door, "door")
         self.setup_slider(self.slider_window, "window")
+        #카메라 슬라이더
+        self.setup_slider(self.slider_camera, "camera")
 
         #db 연결
         self.remote = mysql.connector.connect(
@@ -123,7 +108,6 @@ class WindowClass(QMainWindow, from_class):
     def open_log_window(self):
         self.log_window = LogWindow()
         self.log_window.show()
-        self.close()
 
 
     # 카메라 On    
@@ -145,12 +129,12 @@ class WindowClass(QMainWindow, from_class):
     #카메라 클릭 했을 때 함수
     def clickCamera(self):
         if self.isCameraOn == False:
-            self.btn_Camera.setStyleSheet("background-color: rgb(0, 255, 0);")
+            # self.btn_Camera.setStyleSheet("background-color: rgb(0, 255, 0);")
             self.isCameraOn = True
             self.cameraStart()
 
         else:
-            self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
+            # self.btn_Camera.setStyleSheet("background-color: rgb(255, 0, 0);")
             self.isCameraOn = False
 
             self.cameraStop()
@@ -166,10 +150,13 @@ class WindowClass(QMainWindow, from_class):
         self.camera.running = False
         self.video.release() #Test
 
-        #카메라 화면 검은색으로 적용
-        black_pixmap = QPixmap(self.label_Camera.size())
-        black_pixmap.fill(Qt.black)
-        self.label_Camera.setPixmap(black_pixmap)
+        #chilly guy 이미지로
+        self.pixmap = QPixmap()
+        self.pixmap.load("./data/chillguy.png")
+        #이미지 크기 조정
+        scaled_pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.width())
+        self.label_Camera.setPixmap(scaled_pixmap)
+
 
 
 
@@ -189,9 +176,13 @@ class WindowClass(QMainWindow, from_class):
         slider.setValue(new_value)
         slider.setStyleSheet(self.get_style(new_value))
 
+        if io == "camera":
+            self.clickCamera()
+
         super().mousePressEvent(event)
 
-        response = requests.post( "http://192.168.0.17:9000/send" , json={"io": io, "value": new_value})
+        response = requests.post( "http://127.0.0.1:9000/send" , json={"io": io, "value": new_value})
+        
         print("Server Response:", response.json())
 
 

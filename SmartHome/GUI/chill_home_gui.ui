@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>762</width>
-    <height>599</height>
+    <width>711</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,11 +25,14 @@
   <widget class="QLabel" name="label_date">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>60</y>
+     <x>390</x>
+     <y>20</y>
      <width>151</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;</string>
    </property>
    <property name="text">
     <string>YYYY - MM - DD DDD</string>
@@ -41,10 +44,10 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>40</y>
-     <width>231</width>
-     <height>51</height>
+     <x>10</x>
+     <y>10</y>
+     <width>241</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -60,26 +63,13 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_chillguy">
-   <property name="geometry">
-    <rect>
-     <x>575</x>
-     <y>30</y>
-     <width>131</width>
-     <height>221</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_Camera">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>160</y>
-     <width>511</width>
-     <height>391</height>
+     <x>10</x>
+     <y>50</y>
+     <width>551</width>
+     <height>441</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -94,33 +84,11 @@ border-radius: 5px;
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_Camera">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>530</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">
-    border-radius: 10px;  /* 모서리 둥글게 */
-    border: 2px solid lightgray; /* 테두리 추가 (기본 버튼 색 유지) */
-    background-color: palette(button); /* 기본 버튼 색 유지 */
-    color: palette(button-text); /* 기본 글자 색 유지 */
-
-</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>575</x>
-     <y>480</y>
+     <x>570</x>
+     <y>420</y>
      <width>131</width>
      <height>71</height>
     </rect>
@@ -141,10 +109,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>575</x>
-     <y>240</y>
+     <x>570</x>
+     <y>197</y>
      <width>131</width>
-     <height>71</height>
+     <height>68</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -163,10 +131,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>575</x>
-     <y>400</y>
+     <x>570</x>
+     <y>348</y>
      <width>131</width>
-     <height>71</height>
+     <height>68</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -185,10 +153,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>575</x>
-     <y>160</y>
+     <x>570</x>
+     <y>123</y>
      <width>131</width>
-     <height>71</height>
+     <height>68</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -208,7 +176,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
    <property name="geometry">
     <rect>
      <x>595</x>
-     <y>250</y>
+     <y>210</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -227,7 +195,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
    <property name="geometry">
     <rect>
      <x>595</x>
-     <y>410</y>
+     <y>360</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -245,10 +213,10 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>575</x>
-     <y>320</y>
+     <x>570</x>
+     <y>273</y>
      <width>131</width>
-     <height>71</height>
+     <height>68</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -268,7 +236,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
    <property name="geometry">
     <rect>
      <x>595</x>
-     <y>330</y>
+     <y>290</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -287,7 +255,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
    <property name="geometry">
     <rect>
      <x>595</x>
-     <y>170</y>
+     <y>140</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -305,8 +273,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>580</x>
-     <y>490</y>
+     <x>575</x>
+     <y>430</y>
      <width>38</width>
      <height>38</height>
     </rect>
@@ -333,8 +301,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>660</x>
-     <y>490</y>
+     <x>653</x>
+     <y>430</y>
      <width>38</width>
      <height>38</height>
     </rect>
@@ -361,8 +329,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>490</y>
+     <x>614</x>
+     <y>430</y>
      <width>38</width>
      <height>38</height>
     </rect>
@@ -389,8 +357,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QPushButton" name="btn_move_to_log">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>59</y>
+     <x>650</x>
+     <y>17</y>
      <width>51</width>
      <height>23</height>
     </rect>
@@ -398,8 +366,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
    <property name="styleSheet">
     <string notr="true">QPushButton
 {
-    background-color: rgb(225, 213, 231);
-    border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */
+    background-color: transparent;
+    border-radius:  10px;  /* 모서리를 둥글게 (값을 조절 가능) */
+	border: 1px solid rgb(150, 115 ,160);  /* 테두리 */
 }
 </string>
    </property>
@@ -407,81 +376,102 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <string>LOG</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_move_to_users">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>90</y>
-     <width>40</width>
-     <height>40</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton
-{
-    background-color: rgb(225, 213, 231);
-    border-radius:  20px;  /* 모서리를 둥글게 (값을 조절 가능) */
-	border: 1px solid rgb(150, 115 ,160);  /* 테두리 */
-}
-</string>
-   </property>
-   <property name="text">
-    <string>Users</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_user_name">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>100</y>
-     <width>57</width>
-     <height>15</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-   <property name="wordWrap">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_user_name_2">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>100</y>
-     <width>57</width>
-     <height>15</height>
+     <x>600</x>
+     <y>20</y>
+     <width>41</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>Home</string>
    </property>
   </widget>
-  <zorder>label_chillguy</zorder>
+  <widget class="QSlider" name="slider_camera">
+   <property name="geometry">
+    <rect>
+     <x>595</x>
+     <y>70</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="maximum">
+    <number>1</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>570</x>
+     <y>50</y>
+     <width>131</width>
+     <height>68</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: white;
+border: 1px solid gray;  /* 테두리 */
+border-radius: 5px;  /* 모서리 둥글게 */
+</string>
+   </property>
+   <property name="text">
+    <string>Camera</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_move_to_users">
+   <property name="geometry">
+    <rect>
+     <x>549</x>
+     <y>17</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    background-color: transparent;
+    border-radius:  10px;  /* 모서리를 둥글게 (값을 조절 가능) */
+	border: 0px solid rgb(150, 115 ,160);  /* 테두리 */
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Jane</string>
+   </property>
+  </widget>
+  <zorder>label_5</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_7</zorder>
   <zorder>label_date</zorder>
   <zorder>label_12</zorder>
   <zorder>label_Camera</zorder>
-  <zorder>btn_Camera</zorder>
   <zorder>label_8</zorder>
   <zorder>label_4</zorder>
   <zorder>label_6</zorder>
-  <zorder>label_3</zorder>
   <zorder>slider_garage</zorder>
   <zorder>slider_window</zorder>
-  <zorder>label_5</zorder>
-  <zorder>slider_door</zorder>
-  <zorder>slider_led</zorder>
   <zorder>label_9</zorder>
   <zorder>label_10</zorder>
   <zorder>label_11</zorder>
   <zorder>btn_move_to_log</zorder>
-  <zorder>btn_move_to_users</zorder>
-  <zorder>label_user_name</zorder>
   <zorder>label_user_name_2</zorder>
+  <zorder>slider_camera</zorder>
+  <zorder>slider_door</zorder>
+  <zorder>slider_led</zorder>
+  <zorder>btn_move_to_users</zorder>
  </widget>
  <resources/>
  <connections/>
