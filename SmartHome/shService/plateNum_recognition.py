@@ -6,32 +6,47 @@ import cv2
 import easyocr
 import serial
 import time
+import mysql.connector
 
-# def connect():
-#     conn = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=1)
+# Initialize OCR reader
+reader = easyocr.Reader(['en'])
 
-#     return conn
+# Define the serial connection to Arduino (adjust COM port as needed)
+conn = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+time.sleep(2)  # Wait for connection to establish
 
-# def send(conn):
-#     while True:
-#         data = input("Input : ")
-#         if (data == 'q'):
-#             break
+# Find if it's authorized plates
 
-#         conn.write(data.encode())
-#         time.sleep(0.1)
+# "SELECT * FROM numberPlates WHERE numberPlate = %s"
+authorized_plates = {"ABC123", "XYZ789"}
 
-#         if (conn.readable()):
-#             recv = conn.readline().decode().strip('\r\n')
-#             if(len(recv)>0):
-#                 print("recv: " + str(recv))
+def openGarage(self):
+    return
 
-#     return
+def closeGarage(self):
+    return
 
 
-# if __name__== "__main__":
-#     conn = connect()
-#     send(conn)
-#     conn.close()
+def readPlates(self):
+    # open the webcam
+    # capture and save as jpg
+    # easy ocr
+    # if it's right -> open
+    openGarage()
+    # else notify user 'un-authorized plates has been detected'
+    return
 
 
+def detectObstacle(self):
+    # if it's closing
+    # if obstacle detected
+    # stop and open the garage door
+    return
+
+
+def connect(self):
+    # connect to serial
+    conn = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    return
+
+def 
