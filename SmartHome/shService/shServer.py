@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify
 import serial
+import requests
+
+HOST = '192.168.0.4'
+PORT = 80
 
 app = Flask(__name__)
 
@@ -9,6 +13,18 @@ def receive_data():
     print(f"Received data: {data}")
     if data['io'] == "led":
         msg = "led ON" if data['value'] == 1 else "led OFF"
+
+        position = "ON" if data['value'] == 1 else "OFF"
+        url = f"http://{HOST}:{PORT}/{position}"
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                print(f"Servo moved to {90 if position == 'H' else 0} degrees.")
+            else:
+                print("Failed to control servo:", response.status_code)
+        except Exception as e:
+            print("Error:", e)
+
     elif data['io'] == "garage":
         msg = "garage open" if data['value'] == 1 else "garage close"
     elif data['io'] == "door":
