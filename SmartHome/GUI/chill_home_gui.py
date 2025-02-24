@@ -9,7 +9,8 @@ from PyQt5.QtGui import *
 import mysql.connector
 import time
 import cv2
-from userAdd import UserWindow
+from Users import UserWindow
+# from userAdd import UserAddWindow
 from Users_VehicleInformation import VehicleWindow
 from userUpdate import UserUpdateWindow
 import requests
@@ -21,6 +22,25 @@ from_class = uic.loadUiType("chill_home_gui.ui")[0]
 LogUI = uic.loadUiType("Log.ui")[0]
 UsersUI = uic.loadUiType("Users.ui")[0]
 
+<<<<<<< HEAD
+=======
+#Users class
+# class UsersWindow(QMainWindow, UsersUI):
+#     """ usertab 화면 """
+#     def __init__(self):
+#         super().__init__()
+#         self.setupUi(self)
+        
+
+
+#로그화면 class
+# class LogWindow(QMainWindow, LogUI):
+#     """ 로그 화면 """
+#     def __init__(self):
+#         super().__init__()
+#         self.setupUi(self)
+
+>>>>>>> main
 
 #카메라 class
 class Camera(QThread):
@@ -97,11 +117,22 @@ class WindowClass(QMainWindow, from_class):
 
 
     #Users tab 열기
+<<<<<<< HEAD
     def open_usertab(self):
         self.users_window = UsersWindow()
         self.users_window.show()
     #Log tab 열기
     def open_logtab(self):
+=======
+    def open_users_window(self):
+        self.main_window = UserWindow()
+        self.main_window.show()
+        self.close()
+
+
+    #LOG tab 열기
+    def open_log_window(self):
+>>>>>>> main
         self.log_window = LogWindow()
         self.log_window.show()
 
