@@ -29,7 +29,7 @@ model.load_state_dict(torch.load(weight_path, map_location = device))
 model.eval()
 
 class WindowClass(QMainWindow, from_class):
-    def __init__(self, userId):
+    def __init__(self, userId=1):
         super().__init__()
         self.setupUi(self)
         self.userId = userId
@@ -64,10 +64,6 @@ class WindowClass(QMainWindow, from_class):
         cursor = self.remote.cursor()
         face_sql = "INSERT INTO faceEmbeddings (userId, embedding) VALUES (%s, %s)"
         cursor.execute(face_sql, (self.userId, self.embedding_json))
-        self.remote.commit()
-
-        log_sql = "INSERT INTO smartHomeLog (userId, wayId, statusId, logDate) VALUES (%s, %s, %s, NOW())"
-        cursor.execute(log_sql, (self.userId, 1 ,9))
         self.remote.commit()
         cursor.close()
 

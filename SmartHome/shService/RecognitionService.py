@@ -11,6 +11,16 @@ sys.path.append("../GUI/insightface/recognition/arcface_torch")
 from backbones.iresnet import iresnet50
 import mysql.connector
 import json
+import socket
+import time
+import requests
+
+HOST = '192.168.0.4'
+PORT = 80
+
+failCount = 0
+lockout_time = None  # 인증 차단 시작 시간 (초기값: 없음)
+LOCKOUT_DURATION = 3 * 60  # 차단 시간 (초 단위, 3분)
 
 remote = mysql.connector.connect(
     host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -137,13 +147,25 @@ def face_embedding(model, img, dsize=112, device='cuda'):
     embed = model(img).detach().cpu().numpy()
     return l2_norm(embed)
 
+def move_servo(position):
+    url = f"http://{HOST}:{PORT}/{position}"
+    
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            print(f"Servo moved to {90 if position == 'H' else 0} degrees.")
+        else:
+            print("Failed to control servo:", response.status_code)
+    except Exception as e:
+        print("Error:", e)
+
 weight_path = "./model/face_recognition.pt"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = iresnet50().to(device)
 model.load_state_dict(torch.load(weight_path, map_location = device))
 model.eval()
 
-URL = "http://192.168.219.128"
+URL = "http://192.168.0.52"
 AWB = True
 
 cursor = remote.cursor()
@@ -152,8 +174,6 @@ records = cursor.fetchall()
 stored_embeddings = [np.array(json.loads(record[0])).reshape(512) for record in records]
 
 cap = cv2.VideoCapture(URL + ":81/stream")
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
 if not cap.isOpened():
     raise RuntimeError("카메라가 열리지 않습니다.")
@@ -161,6 +181,33 @@ if not cap.isOpened():
 try:
     while True:
         ret, frame = cap.read()
+        frame_height, frame_width = frame.shape[:2]
+
+        # if failCount >= 5:
+        #     if lockout_time is None:
+        #         lockout_time = time.time()  # 현재 시간 저장
+        #         print("🚫 인증 실패 5회 초과! 3분 동안 얼굴 인식 차단됩니다.")
+
+        #     elapsed_time = time.time() - lockout_time
+        #     remaining_time = LOCKOUT_DURATION - elapsed_time
+
+        #     if remaining_time > 0:
+        #         minutes = int(remaining_time // 60)
+        #         seconds = int(remaining_time % 60)
+                
+        #         text = f"Auth LockOut: {minutes}min {seconds}sec remain"
+        #         print(text)
+
+        #         # 프레임에 차단 메시지 표시
+        #         cv2.putText(frame, text, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        #         cv2.imshow('FACE ID', frame)
+        #         cv2.waitKey(1)
+        #         time.sleep(1)  # 1초 대기 후 다시 확인
+        #         continue
+        #     else:
+        #         print("🔓 차단 해제됨! 얼굴 인식 재개")
+        #         failCount = 0  # 실패 횟수 초기화
+        #         lockout_time = None  # 차단 해제
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         face_detection = face_detector(frame, 0)
@@ -170,8 +217,6 @@ try:
 
             x1, y1, x2, y2 = f.left(), f.top(), f.right(), f.bottom()
             faceAligned = fa.align(frame, gray, f)
-            
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
             known_embed = face_embedding(model, faceAligned, 112).reshape(512) 
             embedding_json = json.dumps(known_embed.tolist())
@@ -188,8 +233,8 @@ try:
                     break
 
             if authentication_success:
-                print("인증 성공")
-                frame_height, frame_width = frame.shape[:2]
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                move_servo("H")
 
                 text = "Auth Success"
                 text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
@@ -198,7 +243,8 @@ try:
 
                 cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             else:
-                rame_height, frame_width = frame.shape[:2]
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                move_servo("L")
 
                 text = "Auth fail"
                 text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
@@ -206,9 +252,10 @@ try:
                 text_y = frame_height - 50
 
                 # 텍스트 출력
-                cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 225), 2)
+                failCount += 1
 
-        cv2.imshow('frame', frame)
+        cv2.imshow('FACE ID', frame)
 
         if cv2.waitKey(1) == 27:
             break
