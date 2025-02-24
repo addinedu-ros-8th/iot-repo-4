@@ -54,7 +54,7 @@ class Camera(QThread):
     def stop(self):
         self.running = False
 
-
+#메인 CLASS
 class WindowClass(QMainWindow, from_class):
     def __init__(self, userInfo = None):
         super().__init__()
@@ -80,7 +80,7 @@ class WindowClass(QMainWindow, from_class):
         #chillguy 이미지
         self.pixmap = QPixmap()
         self.pixmap.load("./data/chillguy.png")
-
+        #이미지 크기 조정
         scaled_pixmap = self.pixmap.scaled(self.label_chillguy.width(), self.label_chillguy.width())
         self.label_chillguy.setPixmap(scaled_pixmap)
 
@@ -102,6 +102,7 @@ class WindowClass(QMainWindow, from_class):
         self.setup_slider(self.slider_door, "door")
         self.setup_slider(self.slider_window, "window")
 
+        #db 연결
         self.remote = mysql.connector.connect(
             host="database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
             user="chillHome",
@@ -138,6 +139,7 @@ class WindowClass(QMainWindow, from_class):
             self.pixmap = self.pixmap.scaled(self.label_Camera.width(), self.label_Camera.height())
 
             self.label_Camera.setPixmap(self.pixmap)
+            
 
     #카메라 클릭 했을 때 함수
     def clickCamera(self):
@@ -151,7 +153,6 @@ class WindowClass(QMainWindow, from_class):
             self.isCameraOn = False
 
             self.cameraStop()
-            self.label_Camera.setStyleSheet("background-color: black;")
 
     #카메라 start 함수
     def cameraStart(self):
@@ -162,7 +163,13 @@ class WindowClass(QMainWindow, from_class):
     #카메라 stop 함수
     def cameraStop(self):
         self.camera.running = False
-        self.video.release
+        self.video.release() #Test
+
+        #카메라 화면 검은색으로 적용
+        black_pixmap = QPixmap(self.label_Camera.size())
+        black_pixmap.fill(Qt.black)
+        self.label_Camera.setPixmap(black_pixmap)
+
 
 
     #Slider 색상 
@@ -187,6 +194,7 @@ class WindowClass(QMainWindow, from_class):
         print("Server Response:", response.json())
 
 
+    # 슬라이더 스타일
     def get_style(self, value):
         """ ON/OFF 상태에 따라 스타일 변경 """
         if value == 1:
