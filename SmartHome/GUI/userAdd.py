@@ -5,10 +5,12 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 import mysql.connector
 import re
-from faceId import WindowClass
+from faceId import faceIdClass
+from register_rfid import Register_RFID
 
 from_class = uic.loadUiType("userAdd.ui")[0]
 face_id_ui = uic.loadUiType("faceId.ui")[0]
+register_rfid = uic.loadUiType("register_rfid.ui")[0]
 
 class UserWindow(QMainWindow, from_class):
     def __init__(self):
@@ -57,7 +59,6 @@ class UserWindow(QMainWindow, from_class):
         name = self.editName.text()
         birthday = self.editBirthday.text()
         phone = self.editPhone.text()
-        rfidKey = self.editRfidKey.text()
 
         if not self.idCheckFlag:
             QMessageBox.warning(self, "Save Users", "아이디 중복 체크 완료 후 저장 가능합니다.")
@@ -82,19 +83,24 @@ class UserWindow(QMainWindow, from_class):
         if phone == "":
             QMessageBox.warning(self, "Save Users", "전화번호를 입력해주세요.")
             return
-        if rfidKey == "":
-            QMessageBox.warning(self, "Save Users", "Rfid Key를 입력해주세요.")
-            return
         
-        sql = "INSERT INTO users (homeId, id, password, name, birthday, phone, userUid, createDate) VALUES (1, %s, SHA2(%s, 256), %s, %s, %s, %s, NOW())"
+        # sql = "INSERT INTO users (homeId, id, password, name, birthday, phone, userUid, createDate) VALUES (1, %s, SHA2(%s, 256), %s, %s, %s, %s, NOW())"
 
-        cursor = self.remote.cursor()
-        cursor.execute(sql, (id, passwd, name, birthday, phone, rfidKey))
-        self.remote.commit()
-        cursor.close()
+        # cursor = self.remote.cursor()
+        # cursor.execute(sql, (id, passwd, name, birthday, phone, rfidKey))
+        # self.remote.commit()
+        # cursor.close()
 
-        self.main_window = WindowClass(cursor.lastrowid)
-        self.main_window.show()
+        user_data_dic = {
+            "id" : id,
+            "passwd" : passwd,
+            "name" : name,
+            "birthday" : birthday,
+            "phone" : phone,
+        }
+
+        self.rfid_window = Register_RFID(user_data_dic)
+        self.rfid_window.show()
         self.close() 
 
 if __name__ == "__main__":
