@@ -43,9 +43,12 @@ class Camera(QThread):
 
 #메인 CLASS
 class WindowClass(QMainWindow, from_class):
-    def __init__(self, userInfo = None):
+    def __init__(self, result):
         super().__init__()
         self.setupUi(self)
+        #로그인된 사람 가져오기
+        self.result = result
+        self.btn_move_to_users.setText(self.result[4])
 
         #카메라 상태 확인 및 객체 생성
         self.isCameraOn = False

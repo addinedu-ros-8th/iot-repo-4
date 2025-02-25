@@ -449,7 +449,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Jane</string>
+    <string/>
    </property>
   </widget>
   <zorder>label_5</zorder>
