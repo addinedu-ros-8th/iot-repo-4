@@ -1,80 +1,3 @@
-// #include <MQUnifiedsensor.h>
-// #include <Servo.h>
-
-// #define placa "Arduino UNO"
-// #define Voltage_Resolution 5
-// #define gaspin A0  // 가스 센서 아날로그 입력 핀
-// #define type "MQ-6"
-// #define ADC_Bit_Resolution 10
-// #define RatioMQ6CleanAir 10
-
-// MQUnifiedsensor MQ6(placa, Voltage_Resolution, ADC_Bit_Resolution, gaspin, type);
-// Servo servo;
-
-// int servoPin = 9;  // 서보모터 PWM 핀
-// int buzzerPin = 7;  // 스피커(부저) 핀
-// bool window_opened = false;  // 창문 상태 저장
-
-// void setup() 
-// {
-//   Serial.begin(9600);  // 시리얼 통신 시작
-
-//   servo.write(0);
-
-//   MQ6.setRegressionMethod(1);
-//   MQ6.setA(2127.2); MQ6.setB(-2.526);
-//   MQ6.init();  
-
-//   servo.attach(servoPin);  // 서보모터 핀 연결
-//   pinMode(buzzerPin, OUTPUT);  // 스피커 핀 출력 모드 설정
-
-//   Serial.println("Calibrating...");
-
-//   float calcR0 = 0;
-
-//   for (int i = 1; i <= 10; i++) 
-//   {
-//     MQ6.update();
-//     calcR0 += MQ6.calibrate(RatioMQ6CleanAir);
-//     Serial.print(".");
-//   }
-
-//   MQ6.setR0(calcR0 / 10);
-//   Serial.println(" done!");
-// }
-
-// void loop() 
-// {
-  
-//   MQ6.update();
-//   float ppm = MQ6.readSensor();  
-//   // Serial.println("왜안되냐고 진짜");
-//   Serial.println(ppm);  // Python으로 보낼 데이터
-
-//   if (ppm > 100 && !window_opened) 
-//   {
-//     Serial.println("ALERT");  // Python에서 감지할 문자열
-//     servo.write(90);  // 서보모터 90도 회전
-//     digitalWrite(buzzerPin, HIGH);  // 스피커 울리기
-//     delay(3000);  // 3초 동안 유지
-//     // digitalWrite(buzzerPin, LOW);  // 스피커 끄기
-//     window_opened = true;  
-//   } 
-  
-//   else if (ppm <= 100 && window_opened) 
-//   {
-//     Serial.println("SAFE");
-//     servo.write(0);  // 서보모터 원래 위치로
-//     window_opened = false;
-//   }
-
-//   delay(500);  // 센서값 갱신 주기
-  
-// }
-
-
-
-
 #include <Servo.h>
 
 int gasSensorPin = A0;  
@@ -82,6 +5,7 @@ int speakerPin = 9;   // 스피커 핀 정의
 Servo myServo;        // 서보 모터 객체 생성
 unsigned long alertStartTime = 0;
 bool alertActive = false;
+unsigned long lastPrintTime = 0;  // 마지막으로 출력한 시간 기록
 
 void setup() 
 {
@@ -95,18 +19,39 @@ void setup()
 void loop() 
 {
   int gasLevel = analogRead(gasSensorPin);
+  unsigned long currentMillis = millis();  // 현재 시간 저장
 
-    if (gasLevel >= 700 && !alertActive) {
-        myServo.write(90);
-        tone(speakerPin, 1000);
-        alertStartTime = millis();  // 현재 시간 저장
-        alertActive = true;
+  // 0~500: 10초(10000ms)마다 한 번 출력 -> 가장 최근값 출력
+  
+  if (gasLevel <= 500) {
+    if (currentMillis - lastPrintTime >= 10000) {  // 10초 경과 체크
+        Serial.print("Gas Level : ");
+        Serial.println(gasLevel);
+        lastPrintTime = currentMillis;  // 마지막 출력 시간 업데이트
     }
+  } 
+  
+  // 501 이상: 즉시 출력
+  else {
+    if (currentMillis - lastPrintTime >= 100) {   // 0.1초 간격으로 표시
+      Serial.print("Gas Level : ");
+      Serial.println(gasLevel);
+      lastPrintTime = currentMillis;  // 마지막 출력 시간 업데이트
+    }
+  }  
 
-    if (alertActive && millis() - alertStartTime >= 3000) {
-        noTone(speakerPin);  // 3초 후에 스피커 멈춤
-        alertActive = false;
-    }
+
+  if (gasLevel >= 700 && !alertActive) {
+      myServo.write(90);
+      tone(speakerPin, 1000);
+      alertStartTime = millis();  // 현재 시간 저장
+      alertActive = true;
+  }
+
+  if (alertActive && millis() - alertStartTime >= 3000) {
+      noTone(speakerPin);  // 3초 후에 스피커 멈춤
+      alertActive = false;
+  }
 
   if (Serial.available() > 0)
   {
