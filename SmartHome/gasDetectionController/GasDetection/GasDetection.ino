@@ -75,41 +75,52 @@
 
 
 
-// #include <Servo.h>
+#include <Servo.h>
 
-// int gasSensorPin = A0;  
-// int speakerPin = 9;   // 스피커 핀 정의
-// Servo myServo;        // 서보 모터 객체 생성
+int gasSensorPin = A0;  
+int speakerPin = 9;   // 스피커 핀 정의
+Servo myServo;        // 서보 모터 객체 생성
+unsigned long alertStartTime = 0;
+bool alertActive = false;
 
-// void setup() 
-// {
-//   Serial.begin(9600);  
-//   myServo.attach(6);   // 서보 모터 핀 6에 연결 (서보 모터 핀은 실제 연결된 핀으로 변경하세요)
-//   myServo.write(0);    // 서보 모터를 0도로 설정
-//   pinMode(speakerPin, OUTPUT); // 스피커 핀을 출력 모드로 설정
-//   noTone(speakerPin);
-// }
+void setup() 
+{
+  Serial.begin(9600);  
+  myServo.attach(6);   // 서보 모터 핀 6에 연결 (서보 모터 핀은 실제 연결된 핀으로 변경하세요)
+  myServo.write(0);    // 서보 모터를 0도로 설정
+  pinMode(speakerPin, OUTPUT); // 스피커 핀을 출력 모드로 설정
+  noTone(speakerPin);
+}
 
-// void loop() 
-// {
-//   int gasLevel = analogRead(gasSensorPin);  
-//   Serial.println(gasLevel);  
+void loop() 
+{
+  int gasLevel = analogRead(gasSensorPin);
 
-//   String data = "";
-//   if (Serial.available() > 0)
-//   {
-//     data = Serial.readStringUntil('\n');
-//     Serial.println(data);
-//   }
+    if (gasLevel >= 700 && !alertActive) {
+        myServo.write(90);
+        tone(speakerPin, 1000);
+        alertStartTime = millis();  // 현재 시간 저장
+        alertActive = true;
+    }
 
-//   // 가스 센서 값이 700 이상일 때 서보 모터를 90도로 이동
-//   if (gasLevel >= 700)
-//   {
-//     myServo.write(90);  // 서보 모터를 90도로 이동
-//     tone(speakerPin, 1000, 3000);  // 스피커에서 1000Hz로 3초 동안 울리게 함
-//   }
-//   else
-//   {
-//     myServo.write(0);   // 서보 모터를 0도로 돌아가게 설정
-//   }
-// }
+    if (alertActive && millis() - alertStartTime >= 3000) {
+        noTone(speakerPin);  // 3초 후에 스피커 멈춤
+        alertActive = false;
+    }
+
+  if (Serial.available() > 0)
+  {
+    String receivedData = Serial.readStringUntil('\n');
+    receivedData.trim();
+
+    if (receivedData == "WO") {
+      Serial.println("opened");
+      myServo.write(90);
+    } else if (receivedData == "WC") {
+      Serial.println("closed");
+      myServo.write(0);
+    } else {
+      Serial.println("잘못된 정보입니다.");
+    }
+  }
+}
