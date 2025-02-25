@@ -15,7 +15,7 @@ import socket
 import time
 import requests
 
-HOST = '192.168.0.4'
+HOST = '192.168.0.11'
 PORT = 80
 
 failCount = 0

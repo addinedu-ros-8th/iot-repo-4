@@ -141,22 +141,18 @@ void loop() {
   if (state == HIGH && (currentTime - lastDebounceTime) > debounceDelay)
   {
     lastDebounceTime = currentTime;
-    Serial.println("test001");
 
     if (!beforeStatus)
     {
       servo.write(90);
       beforeStatus = true;
-      Serial.println("test002");
     } else {
       servo.write(0);
       beforeStatus = false;
-      Serial.println("test003");
     }
   }
 
   int ledState = digitalRead(LEDBTN);
-  Serial.println(ledState);
 
   if (ledState == HIGH && (currentTime - lastDebounceTime) > debounceDelay)
   {
