@@ -36,8 +36,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char *ssid = "torry";
-const char *password = "1608008993";
+const char *ssid = "AIE_509_2.4G";
+const char *password = "addinedu_class1";
 
 void startCameraServer();
 void setupLedFlash(int pin);

@@ -9,7 +9,7 @@ import mysql.connector
 # arduino = serial.Serial('/dev/ttyUSB0', 9600)
 
 # ESP32-CAM의 IP 주소
-ESP32_CAM_URL = "http://192.168.0.49/capture"
+ESP32_CAM_URL = "http://192.168.0.13/capture"
 
 # DB 설정
 db = remote = mysql.connector.connect(
