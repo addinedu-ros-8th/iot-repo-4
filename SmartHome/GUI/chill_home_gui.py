@@ -47,6 +47,13 @@ class WindowClass(QMainWindow, from_class):
     def __init__(self, result):
         super().__init__()
         self.setupUi(self)
+
+        #가스 값 받아와서 적용하면되용
+        gas_value = 0
+
+        # 가스 상태
+        self.gas_status(gas_value)
+
         #로그인된 사람 가져오기
         self.result = result
         self.btn_move_to_users.setText(self.result[4])
@@ -104,6 +111,26 @@ class WindowClass(QMainWindow, from_class):
         result = cursor.fetchall()
         return result
 
+
+    #gas_status
+    def gas_status(self, gas_value):
+
+        if gas_value < 500:
+            self.label_gas_safe.show()
+            self.label_gas_caution.hide()
+            self.label_gas_danger.hide()
+
+        elif 500 < gas_value < 700:
+            self.label_gas_safe.hide()
+            self.label_gas_caution.show()
+            self.label_gas_danger.hide()
+        
+        else:  # gas_value >= 700
+            self.label_gas_safe.hide()
+            self.label_gas_caution.hide()
+            self.label_gas_danger.show()            
+
+        
 
     #Users tab 열기
     def open_usertab(self):

@@ -93,6 +93,13 @@ border-radius: 5px;
      <height>71</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -100,7 +107,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Gas</string>
+    <string>가스</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -115,6 +122,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
      <height>68</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -122,7 +139,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Garage</string>
+    <string>차고문</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -137,6 +154,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
      <height>68</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -144,7 +171,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Window</string>
+    <string>창문</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -159,6 +186,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
      <height>68</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -166,7 +203,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>LED</string>
+    <string>조명</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -219,6 +256,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
      <height>68</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -226,7 +273,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Door</string>
+    <string>현관문</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -270,63 +317,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
-   <property name="geometry">
-    <rect>
-     <x>575</x>
-     <y>430</y>
-     <width>38</width>
-     <height>38</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>7</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">    background-color: 	#72CC82; /* 연한 하늘색 */
-	border: 1px solid gray;  /* 테두리 */
-    border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */</string>
-   </property>
-   <property name="text">
-    <string>Safe</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_10">
-   <property name="geometry">
-    <rect>
-     <x>653</x>
-     <y>430</y>
-     <width>38</width>
-     <height>38</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>7</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">    background-color: rgb(255, 0, 0); /* 연한 하늘색 */
-	border: 1px solid gray;  /* 테두리 */
-    border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */</string>
-   </property>
-   <property name="text">
-    <string>Danger</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_11">
+  <widget class="QLabel" name="label_gas_safe">
    <property name="geometry">
     <rect>
      <x>614</x>
@@ -343,7 +334,63 @@ border-radius: 5px;  /* 모서리 둥글게 */
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">    background-color: 	#FF8400; /* 연한 하늘색 */
+    <string notr="true">    background-color: 	#3CB371;
+	border: 1px solid gray;  /* 테두리 */
+    border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */</string>
+   </property>
+   <property name="text">
+    <string>Safe</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_gas_danger">
+   <property name="geometry">
+    <rect>
+     <x>614</x>
+     <y>430</y>
+     <width>38</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">    background-color: #ff0000 ; /* 연한 하늘색 */
+	border: 1px solid gray;  /* 테두리 */
+    border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */</string>
+   </property>
+   <property name="text">
+    <string>Danger</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_gas_caution">
+   <property name="geometry">
+    <rect>
+     <x>614</x>
+     <y>430</y>
+     <width>38</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">    background-color: 	#FFA500 ; /* 연한 하늘색 */
 	border: 1px solid gray;  /* 테두리 */
     border-radius:  19px;  /* 모서리를 둥글게 (값을 조절 가능) */</string>
    </property>
@@ -417,6 +464,16 @@ border-radius: 5px;  /* 모서리 둥글게 */
      <height>68</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Ubuntu</family>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
    <property name="styleSheet">
     <string notr="true">background-color: white;
 border: 1px solid gray;  /* 테두리 */
@@ -424,7 +481,7 @@ border-radius: 5px;  /* 모서리 둥글게 */
 </string>
    </property>
    <property name="text">
-    <string>Camera</string>
+    <string>현관 카메라</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -463,9 +520,9 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <zorder>label_6</zorder>
   <zorder>slider_garage</zorder>
   <zorder>slider_window</zorder>
-  <zorder>label_9</zorder>
-  <zorder>label_10</zorder>
-  <zorder>label_11</zorder>
+  <zorder>label_gas_safe</zorder>
+  <zorder>label_gas_danger</zorder>
+  <zorder>label_gas_caution</zorder>
   <zorder>btn_move_to_log</zorder>
   <zorder>label_user_name_2</zorder>
   <zorder>slider_camera</zorder>
