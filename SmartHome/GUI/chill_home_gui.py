@@ -175,7 +175,7 @@ class WindowClass(QMainWindow, from_class):
             self.clickCamera()
             return
 
-        response = requests.post( "http://192.168.219.127:9000/send" , json={"io": io, "value": new_value})
+        response = requests.post( "http://127.0.0.1:9000/send" , json={"io": io, "value": new_value})
         
         print("Server Response:", response.json())
 
