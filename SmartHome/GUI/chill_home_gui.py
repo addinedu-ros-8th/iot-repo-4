@@ -22,6 +22,7 @@ from_class = uic.loadUiType("chill_home_gui.ui")[0]
 LogUI = uic.loadUiType("Log.ui")[0]
 UsersUI = uic.loadUiType("Users.ui")[0]
 
+URL = "http://192.168.0.52"
 
 #카메라 class
 class Camera(QThread):
@@ -36,7 +37,7 @@ class Camera(QThread):
     def run(self):
         while self.running == True:
             self.update.emit()
-            time.sleep(0.04)
+            time.sleep(0.048)
 
     def stop(self):
         self.running = False
@@ -77,14 +78,6 @@ class WindowClass(QMainWindow, from_class):
         self.timer.start(1000)
         self.update_time()
 
-        # 슬라이더 설정
-        self.setup_slider(self.slider_led, "led")
-        self.setup_slider(self.slider_garage, "garage")
-        self.setup_slider(self.slider_door, "door")
-        self.setup_slider(self.slider_window, "window")
-        #카메라 슬라이더
-        self.setup_slider(self.slider_camera, "camera")
-
         #db 연결
         self.remote = mysql.connector.connect(
             host="database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -92,6 +85,24 @@ class WindowClass(QMainWindow, from_class):
             password="addinedu1!",
             database="chillHome"
         )
+
+        self.itemStatuses = self.getItemStatus()
+
+        # 슬라이더 설정
+        self.setup_slider(self.slider_led, "led", self.itemStatuses[1])
+        self.setup_slider(self.slider_garage, "garage", self.itemStatuses[2])
+        self.setup_slider(self.slider_door, "door", self.itemStatuses[3])
+        self.setup_slider(self.slider_window, "window", self.itemStatuses[4])
+        #카메라 슬라이더
+        self.setup_slider(self.slider_camera, "camera", self.itemStatuses[0])
+
+
+    # 모니터링 상태
+    def getItemStatus(self):
+        cursor = self.remote.cursor()
+        cursor.execute("SELECT * FROM itemStatuses")
+        result = cursor.fetchall()
+        return result
 
 
     #Users tab 열기
@@ -139,7 +150,7 @@ class WindowClass(QMainWindow, from_class):
     def cameraStart(self):
         self.camera.running = True
         self.camera.start()
-        self.video = cv2.VideoCapture(-1)
+        self.video = cv2.VideoCapture(URL + ":81/stream")
 
     #카메라 stop 함수
     def cameraStop(self):
@@ -157,12 +168,13 @@ class WindowClass(QMainWindow, from_class):
 
 
     #Slider 색상 
-    def setup_slider(self, slider, io):
+    def setup_slider(self, slider, io, status):
         """ 슬라이더 공통 설정 """
-        slider.setStyleSheet(self.get_style(0))  # 초기 스타일 설정
-        slider.mousePressEvent = lambda event, s=slider: self.toggle_slider(event, s, io)  # 공통 이벤트 핸들러 적용
+        slider.setValue(status[3])
+        slider.setStyleSheet(self.get_style(status[3]))  # 초기 스타일 설정
+        slider.mousePressEvent = lambda event, s=slider: self.toggle_slider(event, s, io, status)  # 공통 이벤트 핸들러 적용
 
-    def toggle_slider(self, event, slider, io):
+    def toggle_slider(self, event, slider, io, status):
         """ 슬라이더 클릭 시 ON/OFF 전환 """
         if slider.value() == 0:
             new_value = 1
@@ -177,6 +189,11 @@ class WindowClass(QMainWindow, from_class):
         if io == "camera":
             self.clickCamera()
             return
+        
+        cursor = self.remote.cursor()
+        cursor.execute(f"UPDATE itemStatuses SET itemStatus = {new_value} WHERE itemName = '{io}'")
+        self.remote.commit()
+
 
         response = requests.post( "http://127.0.0.1:9000/send" , json={"io": io, "value": new_value})
         
