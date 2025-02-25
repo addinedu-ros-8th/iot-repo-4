@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import serial
-import requests
+import requests, struct
+import time
 
 HOST = '192.168.0.11'
 PORT = 80
@@ -33,6 +34,10 @@ def receive_data():
 
     elif data['io'] == "window":
         msg = "window open" if data['value'] == 1 else "window close"
+        conn = serial.Serial(port="/dev/ttyACM0", baudrate=9600, timeout=1)
+        position = "WO" if data['value'] == 1 else "WC"
+        conn.write(position.encode())
+        conn.close()
         response = {"message": "Data received", "received": msg}
 
     return jsonify(response), 200
