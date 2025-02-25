@@ -48,7 +48,7 @@ class WindowClass(QMainWindow, from_class):
         self.setupUi(self)
 
         #가스 값 받아와서 적용하면되용
-        gas_value = 600
+        gas_value = 0
 
         # 가스 상태
         self.gas_status(gas_value)
