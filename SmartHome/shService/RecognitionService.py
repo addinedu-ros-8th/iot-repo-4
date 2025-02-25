@@ -19,8 +19,11 @@ HOST = '192.168.0.11'
 PORT = 80
 
 failCount = 0
-lockout_time = None  # 인증 차단 시작 시간 (초기값: 없음)
-LOCKOUT_DURATION = 3 * 60  # 차단 시간 (초 단위, 3분)
+lockout_time = None
+last_auth_time = None
+LOCKOUT_DURATION = 3 * 60
+AUTH_COOLDOWN = 5
+FAIL_COOLDOWN = 2
 
 remote = mysql.connector.connect(
     host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -138,15 +141,6 @@ def face_embedding(model, img, dsize=112, device='cuda'):
     embed = model(img).detach().cpu().numpy()
     return l2_norm(embed)
 
-def face_embedding(model, img, dsize=112, device='cuda'):
-    img = cv2.resize(img, (dsize,dsize))
-    img = np.transpose(img, (2, 0, 1))
-    img = torch.from_numpy(img).unsqueeze(0).float()
-    img.div_(255).sub_(0.5).div_(0.5)
-    img = img.to(device)
-    embed = model(img).detach().cpu().numpy()
-    return l2_norm(embed)
-
 def move_servo(position):
     url = f"http://{HOST}:{PORT}/{position}"
     requests.get(url)
@@ -197,6 +191,13 @@ try:
             else:
                 failCount = 0  # 실패 횟수 초기화
                 lockout_time = None  # 차단 해제
+
+        if last_auth_time:
+            cooldown_time = AUTH_COOLDOWN if authentication_success else FAIL_COOLDOWN
+            if (time.time() - last_auth_time) < cooldown_time:
+                remaining_cd = cooldown_time - (time.time() - last_auth_time)
+                cv2.imshow('FACE ID', frame)
+                continue
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         face_detection = face_detector(frame, 0)
