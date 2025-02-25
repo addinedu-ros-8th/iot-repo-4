@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>366</height>
+    <height>367</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -113,13 +113,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QLabel" name="label_8">
-      <property name="text">
-       <string>RFID Key</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -156,9 +149,6 @@
     </item>
     <item>
      <widget class="QLineEdit" name="editPhone"/>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="editRfidKey"/>
     </item>
    </layout>
   </widget>

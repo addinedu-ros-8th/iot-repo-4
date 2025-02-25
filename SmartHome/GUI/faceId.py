@@ -28,7 +28,7 @@ model = iresnet50().to(device)
 model.load_state_dict(torch.load(weight_path, map_location = device))
 model.eval()
 
-class WindowClass(QMainWindow, from_class):
+class faceIdClass(QMainWindow, from_class):
     def __init__(self, userId=1):
         super().__init__()
         self.setupUi(self)
@@ -233,7 +233,7 @@ def face_embedding(model, img, dsize=112, device='cuda'):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mywindows = WindowClass()
+    mywindows = faceIdClass()
     mywindows.show()
 
     sys.exit(app.exec_())

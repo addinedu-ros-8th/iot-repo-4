@@ -49,7 +49,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Card를 태그해 주십시오</string>
+    <string>RFID Card를 태그해 주십시오</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
