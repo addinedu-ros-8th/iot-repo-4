@@ -6,6 +6,8 @@ from PyQt5.QtGui import *
 from PyQt5 import uic
 from PyQt5.QtCore import *
 import mysql.connector
+from Users import UsersWindow
+
 
 from_class = uic.loadUiType("Log.ui")[0]
 
@@ -54,42 +56,70 @@ class LogWindow(QMainWindow, from_class) :
         self.dateStart.currentTextChanged.connect(self.filter_table)
         self.dateEnd.currentTextChanged.connect(self.filter_table)
 
+        # User 화면으로 이동
+        self.btnUser.clicked.connect(self.open_usertab)
+
         
-        
+    #Users tab 열기
+    def open_usertab(self):
+        self.users_window = UsersWindow()
+        self.users_window.show()    
+
+
     def setup_table(self): 
         cursor = self.remote.cursor()
         query = """
-        SELECT * FROM smartHomeLog;
-        """
+            SELECT 
+                IFNULL(userId, '-') AS userId,
+                IFNULL(authType, '-') AS authType,
+                IFNULL(isVerified, '-') AS isVerified,
+                IFNULL(gasConcentration, '-') AS gasConcentration,
+                IFNULL(createDate, '-') AS createDate,
+                IFNULL(
+                    CASE 
+                        WHEN gasSafetyLevel = 0 THEN '안전'
+                        WHEN gasSafetyLevel = 1 THEN '주의'
+                        WHEN gasSafetyLevel = 2 THEN '위험'
+                        ELSE '-'
+                    END, 
+                '-') AS gasSafetyLevel
+            FROM smartHomeLog; 
+        """    
         cursor.execute(query)
         data = cursor.fetchall()  # 결과 가져오기
         
-        for row in data:
-            self.add_row(row)
+        # for row in data:
+        #     self.add_row(row)
 
+        # NULL 값을 '-'로 변환
+        processed_data = [tuple('-' if value is None else value for value in row) for row in data]
+        return processed_data
+
+        # 위의 코드를 풀어쓰면,
+        # processed_data = []
+        # for row in data:  # data 테이블에서 한 행(row)씩 가져옴
+        #     new_row = []  # 변환된 값을 저장할 리스트
+
+        #     for value in row:  # 한 행(row)에서 각 열(column)의 값을 확인
+        #         if value is None:
+        #             new_row.append('-')  # None이면 '-' 추가
+        #         else:
+        #             new_row.append(value)  # None이 아니면 원래 값 추가
+
+        #     processed_data.append(tuple(new_row))  # 리스트를 튜플로 변환 후 추가
 
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
 
     def add_row(self, data):
-        _, _, _, gasConcentration, gasSafetyLevel, _ = data  # 데이터 언팩
-
-        # gasSafetyLevel을 위험 단계로 변환
-        danger_levels = {0: "안전", 1: "주의", 2: "위험"}
-        gas_safety_text = danger_levels.get(gasSafetyLevel, "알 수 없음")  # 기본값 처리
-        
         row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
         self.tableWidget.insertRow(row_position)  # 새 행 추가
 
-        # 가스 위험 여부 및 가스 수치만 표시
-        self.tableWidget.setItem(row_position, 4, QTableWidgetItem(str(gasConcentration)))  # 가스 수치
-        self.tableWidget.setItem(row_position, 3, QTableWidgetItem(gas_safety_text))  # 가스 위험 여부
-
-        # for col, value in enumerate(data):
-        #     item = QTableWidgetItem(value)  # 아이템 생성
-        #     item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
-        #     self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
+        for col, value in enumerate(data):
+            item = QTableWidgetItem(value)  # 아이템 생성
+            item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
+            self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
 
         for col in range(2):
             item = self.tableWidget.item(row_position, col)
@@ -111,20 +141,26 @@ class LogWindow(QMainWindow, from_class) :
         for row in range(self.tableWidget.rowCount()):
             category_item = self.tableWidget.item(row, 1)  # 인증 방법 (카테고리)
             gas_safety_item = self.tableWidget.item(row, 3)  # 가스 위험 여부
-            gas_concentration_item = self.tableWidget.item(row, 4)  # 가스 수치
-
-            if category_item and gas_safety_item and gas_concentration_item:
+            
+            if category_item and gas_safety_item:
                 category_text = category_item.text()
                 gas_safety_text = gas_safety_item.text()
-                gas_concentration_text = gas_concentration_item.text()
 
                 # 날짜 비교 (로그가 날짜 컬럼을 가지고 있다고 가정)
-                date_item = self.tableWidget.item(row, 2)  # 날짜 컬럼 (있다고 가정)
+                date_item = self.tableWidget.item(row, 5)  # 날짜 컬럼 (있다고 가정)
+                
+                # 날짜가 NULL인 경우 필터링에서 제외
                 if date_item:
                     date_text = date_item.text()
-                    is_in_date_range = start_date <= date_text <= end_date
+                    
+                    if date_text:
+                        is_in_date_range = start_date <= date_text <= end_date
+                
+                    else:
+                        is_in_date_range = True  # 날짜 데이터가 없으면 필터링에서 제외
+
                 else:
-                    is_in_date_range = True  # 날짜 데이터가 없으면 필터링에서 제외
+                    is_in_date_range = True  # 날짜 항목이 아예 없으면 필터링에서 제외
 
                 # 필터 조건 적용 (All이면 해당 필터 무시)
                 category_match = (selected_category == "All" or category_text == selected_category)

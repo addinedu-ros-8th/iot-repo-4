@@ -25,7 +25,6 @@ void loop()
   
   if (gasLevel <= 500) {
     if (currentMillis - lastPrintTime >= 10000) {  // 10초 경과 체크
-        Serial.print("Gas Level : ");
         Serial.println(gasLevel);
         lastPrintTime = currentMillis;  // 마지막 출력 시간 업데이트
     }
@@ -34,7 +33,6 @@ void loop()
   // 501 이상: 즉시 출력
   else {
     if (currentMillis - lastPrintTime >= 100) {   // 0.1초 간격으로 표시
-      Serial.print("Gas Level : ");
       Serial.println(gasLevel);
       lastPrintTime = currentMillis;  // 마지막 출력 시간 업데이트
     }
