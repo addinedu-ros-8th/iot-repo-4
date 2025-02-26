@@ -56,9 +56,6 @@ class LogWindow(QMainWindow, from_class) :
         self.dateStart.currentTextChanged.connect(self.filter_table)
         self.dateEnd.currentTextChanged.connect(self.filter_table)
 
-        # User 화면으로 이동
-        self.btnUser.clicked.connect(self.open_usertab)
-
         
     #Users tab 열기
     def open_usertab(self):
@@ -116,14 +113,15 @@ class LogWindow(QMainWindow, from_class) :
     def add_row(self, logs):
         self.tableWidget.setRowCount(0)
 
-        row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
-        self.tableWidget.insertRow(row_position)  # 새 행 추가
-
         for log in logs:
-            for col, value in enumerate(log):
-                item = QTableWidgetItem(value)  # 아이템 생성
-                item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
-                self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
+            row_position = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(row_position)
+            
+            # 각 열에 대한 QTableWidgetItem 객체 생성 및 중앙 정렬 설정
+            for i in range(6):
+                item = QTableWidgetItem(str(log[i]))
+                item.setTextAlignment(Qt.AlignCenter)  # 텍스트 중앙 정렬
+                self.tableWidget.setItem(row_position, i, item)
 
     def filter_table(self):
         """선택한 category, status, date 범위에 따라 테이블 필터링"""
