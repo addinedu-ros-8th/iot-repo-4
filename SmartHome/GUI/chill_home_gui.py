@@ -16,6 +16,7 @@ from userUpdate import UserUpdateWindow
 import requests
 from Users import UsersWindow
 from gui_log import LogWindow
+import serial
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
@@ -23,6 +24,9 @@ LogUI = uic.loadUiType("Log.ui")[0]
 UsersUI = uic.loadUiType("Users.ui")[0]
 
 URL = "http://192.168.0.52"
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+
+
 
 #카메라 class
 class Camera(QThread):
@@ -42,6 +46,40 @@ class Camera(QThread):
     def stop(self):
         self.running = False
 
+
+
+# 가스 레벨 class
+class GasSensorThread(QThread):
+    gas_signal = pyqtSignal(int)  # UI로 보낼 시그널
+
+    def __init__(self, port="/dev/ttyACM0", baudrate=9600, parent=None):
+        super().__init__()
+        self.main = parent
+        self.running = True  # 스레드 실행 여부
+        
+        try:
+            self.ser = serial.Serial(port, baudrate, timeout=1)
+        except serial.SerialException as e:
+            print(f"Serial error: {e}")
+            self.ser = None
+
+    def run(self):
+        while self.running:
+            if self.ser and self.ser.in_waiting > 0:
+                try:
+                    line = self.ser.readline().decode().strip()
+                    gas_value = int(line)
+                    self.gas_signal.emit(gas_value)  # UI로 전송
+                except (ValueError, UnicodeDecodeError):
+                    continue  # 잘못된 데이터 무시
+
+    def stop(self):
+        self.running = False
+
+        
+
+
+
 #메인 CLASS
 class WindowClass(QMainWindow, from_class):
     def __init__(self, result):
@@ -49,10 +87,12 @@ class WindowClass(QMainWindow, from_class):
         self.setupUi(self)
 
         #가스 값 받아와서 적용하면되용
-        gas_value = 0
+        # gas_value = 0
 
-        # 가스 상태
-        self.gas_status(gas_value)
+        # 가스 센서 스레드 실행
+        self.gas_thread = GasSensorThread("/dev/ttyACM0")
+        self.gas_thread.gas_signal.connect(self.update_gas_level)
+        self.gas_thread.start()
 
         #로그인된 사람 가져오기
         self.result = result
@@ -112,25 +152,36 @@ class WindowClass(QMainWindow, from_class):
         return result
 
 
-    #gas_status
-    def gas_status(self, gas_value):
+    # GUI main gas level visualize
+    def update_gas_level(self, gas_value):
+        """ 가스 수치를 받아서 UI를 업데이트하는 메서드 """
 
         if gas_value < 500:
             self.label_gas_safe.show()
             self.label_gas_caution.hide()
             self.label_gas_danger.hide()
+            gas_safety_level = 0
 
-        elif 500 < gas_value < 700:
+        elif 500 <= gas_value < 700:
             self.label_gas_safe.hide()
             self.label_gas_caution.show()
             self.label_gas_danger.hide()
-        
+            gas_safety_level = 1
+
         else:  # gas_value >= 700
             self.label_gas_safe.hide()
             self.label_gas_caution.hide()
-            self.label_gas_danger.show()            
+            self.label_gas_danger.show()
+            gas_safety_level = 2
 
-        
+     
+        cursor = self.remote.cursor()
+        cursor.execute(
+            "INSERT INTO smartHomeLog (gasConcentration, gasSafetyLevel) VALUES (%s, %s)",
+            (gas_value, gas_safety_level)
+        )
+        self.remote.commit()
+
 
     #Users tab 열기
     def open_usertab(self):
@@ -259,7 +310,7 @@ class WindowClass(QMainWindow, from_class):
         current_date = QDateTime.currentDateTime().toString("yyyy - MM - dd dddd")
         self.label_date.setText(current_date)
 
-
+    
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     myWindows = WindowClass()
