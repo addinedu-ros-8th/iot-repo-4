@@ -28,9 +28,11 @@ def receive_data():
         conn.write(position.encode())
         conn.close()
         response = {"message": "Data received", "received": msg}
+    
+    
+    
     elif data['io'] == "door":
         msg = "door open" if data['value'] == 1 else "door close"
-
         position = "DO" if data['value'] == 1 else "DC"
         url = f"http://{HOST}:{PORT}/{position}"
         requests.get(url)
