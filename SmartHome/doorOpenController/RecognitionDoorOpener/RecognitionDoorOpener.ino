@@ -13,7 +13,8 @@ NetworkServer server(80);
 
 Servo servo;
 
-bool beforeStatus = LOW;
+bool buttonStatus = LOW;
+bool ledStatus = LOW;
 unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 300;
 
@@ -77,18 +78,20 @@ void loop() {
 
         if (currentLine.endsWith("GET /DO")) {
           servo.write(90);
-          beforeStatus = !beforeStatus;
+          buttonStatus = true;
         }
         if (currentLine.endsWith("GET /DC")) {
           servo.write(0);
-          beforeStatus = !beforeStatus;
+          buttonStatus = false;
         }
 
         if (currentLine.endsWith("GET /LO")) {
           digitalWrite(LEDPIN, HIGH);
+          ledStatus = true;
         }
         if (currentLine.endsWith("GET /LF")) {
           digitalWrite(LEDPIN, LOW);
+          ledStatus = false;
         }
       }
     }
@@ -105,13 +108,13 @@ void loop() {
   {
     lastDebounceTime = currentTime;
 
-    if (!beforeStatus)
+    if (!buttonStatus)
     {
       servo.write(90);
-      beforeStatus = true;
+      buttonStatus = true;
     } else {
       servo.write(0);
-      beforeStatus = false;
+      buttonStatus = false;
     }
   }
 
@@ -121,13 +124,13 @@ void loop() {
   {
     lastDebounceTime = currentTime;
 
-    if (!beforeStatus)
+    if (!ledStatus)
     {
       digitalWrite(LEDPIN, HIGH);
-      beforeStatus = true;
+      ledStatus = true;
     } else {
       digitalWrite(LEDPIN, LOW);
-      beforeStatus = false;
+      ledStatus = false;
     }
   }
 }

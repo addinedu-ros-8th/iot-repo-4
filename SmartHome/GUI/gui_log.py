@@ -70,30 +70,31 @@ class LogWindow(QMainWindow, from_class) :
         cursor = self.remote.cursor()
         query = """
             SELECT 
-                IFNULL(userId, '-') AS userId,
-                IFNULL(authType, '-') AS authType,
-                IFNULL(isVerified, '-') AS isVerified,
-                IFNULL(gasConcentration, '-') AS gasConcentration,
-                IFNULL(createDate, '-') AS createDate,
+                IFNULL(u.name, '-') AS userName,
+                IFNULL(l.authType, '-') AS authType,
+                IFNULL(l.isVerified, '-') AS isVerified,
+                IFNULL(l.gasConcentration, '-') AS gasConcentration,
                 IFNULL(
                     CASE 
-                        WHEN gasSafetyLevel = 0 THEN '안전'
-                        WHEN gasSafetyLevel = 1 THEN '주의'
-                        WHEN gasSafetyLevel = 2 THEN '위험'
+                        WHEN l.gasSafetyLevel = 0 THEN '안전'
+                        WHEN l.gasSafetyLevel = 1 THEN '주의'
+                        WHEN l.gasSafetyLevel = 2 THEN '위험'
                         ELSE '-'
                     END, 
-                '-') AS gasSafetyLevel
-            FROM smartHomeLog; 
+                '-') AS gasSafetyLevel,
+                IFNULL(l.createDate, '-') AS createDate
+            FROM smartHomeLog l, users u
+            WHERE l.userId = u.uid; 
         """    
         cursor.execute(query)
         data = cursor.fetchall()  # 결과 가져오기
         
         # for row in data:
-        #     self.add_row(row)
+        self.add_row(data)
 
         # NULL 값을 '-'로 변환
-        processed_data = [tuple('-' if value is None else value for value in row) for row in data]
-        return processed_data
+        # processed_data = [tuple('-' if value is None else value for value in row) for row in data]
+        # return processed_data
 
         # 위의 코드를 풀어쓰면,
         # processed_data = []
@@ -112,20 +113,17 @@ class LogWindow(QMainWindow, from_class) :
         self.cursor.close()
         self.connection.close()
 
-    def add_row(self, data):
+    def add_row(self, logs):
+        self.tableWidget.setRowCount(0)
+
         row_position = self.tableWidget.rowCount()  # 현재 행 개수 확인
         self.tableWidget.insertRow(row_position)  # 새 행 추가
 
-        for col, value in enumerate(data):
-            item = QTableWidgetItem(value)  # 아이템 생성
-            item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
-            self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
-
-        for col in range(2):
-            item = self.tableWidget.item(row_position, col)
-            
-            if item:
-                item.setTextAlignment(Qt.AlignCenter)
+        for log in logs:
+            for col, value in enumerate(log):
+                item = QTableWidgetItem(value)  # 아이템 생성
+                item.setTextAlignment(Qt.AlignCenter)  # 가운데 정렬 적용
+                self.tableWidget.setItem(row_position, col, item)  # 테이블에 추가
 
     def filter_table(self):
         """선택한 category, status, date 범위에 따라 테이블 필터링"""
