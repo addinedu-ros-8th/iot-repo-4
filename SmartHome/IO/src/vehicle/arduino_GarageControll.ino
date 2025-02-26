@@ -76,24 +76,11 @@
 
     }
 
-  else
-  {
-    flag = false;
-  }
-
-  if (Serial.available() > 0) // 데이터 수신 여부 확인
-  {
-    String command = Serial.readStringUntil('\n'); // 개행 문자까지 읽기
-    
-    if (command == "OPEN") {
-        Serial.println("Gate Opening...");
-        gateMotor.write(90); // 문 열기 (각도 조정 가능)
-        delay(5000); // 5초 동안 열기 유지
-        // gateMotor.write(0); // 다시 닫기
-        // Serial.println("Gate Closed.");
+    else
+    {
+      flag = false;
     }
   }
-}
 
 
 
