@@ -19,8 +19,11 @@ HOST = '192.168.0.11'
 PORT = 80
 
 failCount = 0
-lockout_time = None  # 인증 차단 시작 시간 (초기값: 없음)
-LOCKOUT_DURATION = 3 * 60  # 차단 시간 (초 단위, 3분)
+lockout_time = None
+last_auth_time = None
+LOCKOUT_DURATION = 3 * 60
+AUTH_COOLDOWN = 5
+FAIL_COOLDOWN = 2
 
 remote = mysql.connector.connect(
     host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -138,26 +141,9 @@ def face_embedding(model, img, dsize=112, device='cuda'):
     embed = model(img).detach().cpu().numpy()
     return l2_norm(embed)
 
-def face_embedding(model, img, dsize=112, device='cuda'):
-    img = cv2.resize(img, (dsize,dsize))
-    img = np.transpose(img, (2, 0, 1))
-    img = torch.from_numpy(img).unsqueeze(0).float()
-    img.div_(255).sub_(0.5).div_(0.5)
-    img = img.to(device)
-    embed = model(img).detach().cpu().numpy()
-    return l2_norm(embed)
-
 def move_servo(position):
     url = f"http://{HOST}:{PORT}/{position}"
-    
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            print(f"Servo moved to {90 if position == 'H' else 0} degrees.")
-        else:
-            print("Failed to control servo:", response.status_code)
-    except Exception as e:
-        print("Error:", e)
+    requests.get(url)
 
 weight_path = "./model/face_recognition.pt"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -166,7 +152,6 @@ model.load_state_dict(torch.load(weight_path, map_location = device))
 model.eval()
 
 URL = "http://192.168.0.52"
-AWB = True
 
 cursor = remote.cursor()
 cursor.execute("SELECT embedding FROM faceEmbeddings where userId = 1")
@@ -183,31 +168,36 @@ try:
         ret, frame = cap.read()
         frame_height, frame_width = frame.shape[:2]
 
-        # if failCount >= 5:
-        #     if lockout_time is None:
-        #         lockout_time = time.time()  # 현재 시간 저장
-        #         print("🚫 인증 실패 5회 초과! 3분 동안 얼굴 인식 차단됩니다.")
+        if failCount >= 5:
+            if lockout_time is None:
+                lockout_time = time.time()  # 현재 시간 저장
 
-        #     elapsed_time = time.time() - lockout_time
-        #     remaining_time = LOCKOUT_DURATION - elapsed_time
+            elapsed_time = time.time() - lockout_time
+            remaining_time = LOCKOUT_DURATION - elapsed_time
 
-        #     if remaining_time > 0:
-        #         minutes = int(remaining_time // 60)
-        #         seconds = int(remaining_time % 60)
+            if remaining_time > 0:
+                minutes = int(remaining_time // 60)
+                seconds = int(remaining_time % 60)
                 
-        #         text = f"Auth LockOut: {minutes}min {seconds}sec remain"
-        #         print(text)
+                text = f"LockOut: {minutes}:{seconds}"
 
-        #         # 프레임에 차단 메시지 표시
-        #         cv2.putText(frame, text, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-        #         cv2.imshow('FACE ID', frame)
-        #         cv2.waitKey(1)
-        #         time.sleep(1)  # 1초 대기 후 다시 확인
-        #         continue
-        #     else:
-        #         print("🔓 차단 해제됨! 얼굴 인식 재개")
-        #         failCount = 0  # 실패 횟수 초기화
-        #         lockout_time = None  # 차단 해제
+                # 프레임에 차단 메시지 표시
+                cv2.putText(frame, text, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                cv2.imshow('FACE ID', frame)
+                if cv2.waitKey(1) == 27:
+                    break
+
+                continue
+            else:
+                failCount = 0  # 실패 횟수 초기화
+                lockout_time = None  # 차단 해제
+
+        if last_auth_time:
+            cooldown_time = AUTH_COOLDOWN if authentication_success else FAIL_COOLDOWN
+            if (time.time() - last_auth_time) < cooldown_time:
+                remaining_cd = cooldown_time - (time.time() - last_auth_time)
+                cv2.imshow('FACE ID', frame)
+                continue
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         face_detection = face_detector(frame, 0)
@@ -242,6 +232,7 @@ try:
                 text_y = frame_height - 50
 
                 cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                time.sleep(0.5)
             else:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
                 move_servo("DC")
@@ -254,6 +245,7 @@ try:
                 # 텍스트 출력
                 cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 225), 2)
                 failCount += 1
+                time.sleep(0.2)
 
         cv2.imshow('FACE ID', frame)
 

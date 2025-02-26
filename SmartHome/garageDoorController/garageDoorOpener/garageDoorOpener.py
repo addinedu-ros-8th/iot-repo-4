@@ -6,10 +6,11 @@ import easyocr
 import numpy as np
 import mysql.connector
 
-# arduino = serial.Serial('/dev/ttyUSB0', 9600)
+arduino = serial.Serial('/dev/ttyACM0', 9600)
+time.sleep(2)
 
 # ESP32-CAM의 IP 주소
-ESP32_CAM_URL = "http://192.168.0.49/capture"
+ESP32_CAM_URL = "http://192.168.0.30/capture"
 
 # DB 설정
 db = remote = mysql.connector.connect(
@@ -54,6 +55,7 @@ while True:
         
         if result:  # DB에 번호판이 등록되어 있다면
             print("등록된 차량입니다. 문을 엽니다.")
+            arduino.write(b'OPEN\n') # 아두이노에 OPEN 신호 전송
             time.sleep(5)  # 모터가 작동하고 나서 5초 대기 (문 열림 유지)
         else:
             print("등록되지 않은 차량입니다.")
