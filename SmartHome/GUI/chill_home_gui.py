@@ -90,7 +90,7 @@ class WindowClass(QMainWindow, from_class):
         # gas_value = 0
 
         # 가스 센서 스레드 실행
-        self.gas_thread = GasSensorThread("/dev/ttyACM0")
+        self.gas_thread = GasSensorThread("/dev/ttyACM1")
         self.gas_thread.gas_signal.connect(self.update_gas_level)
         self.gas_thread.start()
 

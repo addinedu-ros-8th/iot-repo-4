@@ -40,7 +40,7 @@ def receive_data():
 
     elif data['io'] == "window":
         msg = "window open" if data['value'] == 1 else "window close"
-        conn = serial.Serial(port="/dev/ttyACM0", baudrate=9600, timeout=1)
+        conn = serial.Serial(port="/dev/ttyACM1", baudrate=9600, timeout=1)
         position = "WO" if data['value'] == 1 else "WC"
         conn.write(position.encode())
         conn.close()
