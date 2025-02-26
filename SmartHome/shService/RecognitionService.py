@@ -22,8 +22,8 @@ failCount = 0
 lockout_time = None
 last_auth_time = None
 LOCKOUT_DURATION = 3 * 60
-AUTH_COOLDOWN = 5
-FAIL_COOLDOWN = 2
+AUTH_COOLDOWN = 20
+FAIL_COOLDOWN = 10
 
 remote = mysql.connector.connect(
     host = "database-1.c7iiuw4kenou.ap-northeast-2.rds.amazonaws.com",
@@ -153,11 +153,6 @@ model.eval()
 
 URL = "http://192.168.0.52"
 
-cursor = remote.cursor()
-cursor.execute("SELECT embedding FROM faceEmbeddings where userId = 1")
-records = cursor.fetchall()
-stored_embeddings = [np.array(json.loads(record[0])).reshape(512) for record in records]
-
 cap = cv2.VideoCapture(URL + ":81/stream")
 
 if not cap.isOpened():
@@ -213,39 +208,44 @@ try:
             
 
             authentication_success = False
+            userId = 0
+            userName = ""
+
+            cursor = remote.cursor()
+            cursor.execute("""
+                            SELECT u.uid, u.name, f.embedding
+                            FROM faceEmbeddings f, users u
+                            WHERE f.userId = u.uid
+                            """)
+            records = cursor.fetchall()
 
             for record in records:
-                stored_embedding = np.array(json.loads(record[0])).reshape(512) 
+                stored_embedding = np.array(json.loads(record[2])).reshape(512) 
                 similarity = np.dot(known_embed, stored_embedding) / (np.linalg.norm(known_embed) * np.linalg.norm(stored_embedding))
 
                 if similarity > 0.6:
                     authentication_success = True
+                    userId = record[0]
+                    userName= record[1]
                     break
 
             if authentication_success:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.putText(frame, userName, (f.left()+6,f.bottom()-6), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 move_servo("DO")
-
-                text = "Auth Success"
-                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-                text_x = (frame_width - text_size[0]) // 2
-                text_y = frame_height - 50
-
-                cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                time.sleep(0.5)
+                cursor = remote.cursor()
+                cursor.execute(f"INSERT INTO smartHomeLog (userId, authType, isVerified, isDoorOpen, createDate) VALUES({userId}, '얼굴인증', '성공', '문열림', NOW())")
+                remote.commit()
+                cursor.execute("UPDATE itemStatuses SET itemStatus = 1 WHERE itemName = 'door'")
+                remote.commit()
             else:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-                move_servo("DC")
-
-                text = "Auth fail"
-                text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-                text_x = (frame_width - text_size[0]) // 2
-                text_y = frame_height - 50
-
-                # 텍스트 출력
-                cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 225), 2)
+                cv2.putText(frame, "Fail", (f.left()+6,f.bottom()-6), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 225), 2)
                 failCount += 1
-                time.sleep(0.2)
+                cursor.execute(f"INSERT INTO smartHomeLog (userId, authType, isVerified, createDate) VALUES({userId}, '얼굴인증', '실패', NOW())")
+                remote.commit()
+                cursor.execute("UPDATE itemStatuses SET itemStatus = 0 WHERE itemName = 'door'")
+                remote.commit()
 
         cv2.imshow('FACE ID', frame)
 
