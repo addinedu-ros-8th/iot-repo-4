@@ -32,6 +32,8 @@ def get_frame():
     img_array = np.frombuffer(response.content, np.uint8)  # 받은 데이터를 NumPy 배열로 변환
     return cv2.imdecode(img_array, cv2.IMREAD_COLOR)  # 이미지를 OpenCV 형식으로 디코딩하여 반환
 
+
+
 def recognize_plate(image):
     """이미지에서 차량 번호판을 인식하는 함수"""
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # 이미지를 그레이스케일로 변환
@@ -41,6 +43,8 @@ def recognize_plate(image):
         if prob > 0.5:  # 신뢰도가 50% 이상일 경우에만 번호판으로 인정
             return text  # 인식된 번호판 텍스트 반환
     return None  # 번호판을 인식하지 못하면 None 반환
+
+
 
 while True:
     frame = get_frame()  # ESP32-CAM에서 프레임을 가져옴
@@ -55,9 +59,15 @@ while True:
         
         if result:  # DB에 번호판이 등록되어 있다면
             print("등록된 차량입니다. 문을 엽니다.")
-            arduino.write(b'OPEN\n') # 아두이노에 OPEN 신호 전송
+            arduino.write(b'GO\n') # 아두이노에 OPEN 신호 전송
+            # cursor.execute(""" UPDATE smartHomeLog SET uid =  """)
+            # cursor.execute(""" INSERT INTO smartHomeLog (authType, isVerified) VALUES (%s, %s, %s)""", ("smartHomeLog", "성공"))
+            # cursor.execute(""" INSERT INTO itemStatuses (itemName, itemStatus) VALUES (%s, %s, %s)""", ("Garage", 1))
+            # db.commit()
             time.sleep(5)  # 모터가 작동하고 나서 5초 대기 (문 열림 유지)
         else:
             print("등록되지 않은 차량입니다.")
-    
+            # cursor.execute("""INSERT INTO smartHomeLog (authType, isVerified) VALUES (%s, %s, %s)""", ("numberPlates", "실패"))
+            # cursor.execute("""INSERT INTO itemStatuses (itemName, itemStatus) VALUES (%s, %s, %s)""", ("Garage", 0))
+            # db.commit()
     time.sleep(2)  # 2초마다 한 번씩 이미지를 가져와서 번호판 인식
