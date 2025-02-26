@@ -17,7 +17,7 @@ import requests  # HTTP 요청을 위한 requests 모듈
 # ==========================
 
 # RFID 리더기가 연결된 시리얼 포트 설정 (운영 환경에 맞게 변경해야 함)
-serial_port = "/dev/ttyACM0"  # 리눅스 환경에서 기본적으로 사용되는 시리얼 포트
+serial_port = "/dev/ttyACM1"  # 리눅스 환경에서 기본적으로 사용되는 시리얼 포트
 baud_rate = 9600  # 아두이노와 동일한 통신 속도 (9600 baud)
 ser = serial.Serial(serial_port, baud_rate, timeout=1)  # 시리얼 통신 시작
 
@@ -85,8 +85,8 @@ def wait_for_rfid():
     while True:
         if ser.in_waiting > 0:  # 시리얼 버퍼에 데이터가 있는 경우
             rfid_data = ser.readline().decode(errors="ignore").strip()  # 데이터를 읽고 디코딩 후 공백 제거
-            uid = rfid_data.replace("UID:", "").strip()  # "UID:" 부분을 제거하여 순수한 UID 값 추출
-            return uid  # UID 반환
+            rfuid = rfid_data.replace("UID:", "").strip()  # "UID:" 부분을 제거하여 순수한 UID 값 추출
+            return rfuid  # UID 반환
 
 def authenticate_rfid(rfid_uid):
     """
@@ -107,24 +107,49 @@ def authenticate_rfid(rfid_uid):
         return False  # 인증 불가
 
     # 데이터베이스에서 최신 사용자 UID 목록 가져오기
-    sql = "SELECT userUid FROM users"
+    sql = "SELECT  uid, userUid FROM users"
     cursor = remote.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
 
     # 사용자 UID 목록을 리스트 형태로 저장
-    uid_list = [row[0] for row in result]
+    rfuid_list = [row[1] for row in result]
+
+
+
 
     # RFID UID가 데이터베이스에 존재하는지 확인
-    if rfid_uid in uid_list:
+    if rfid_uid in rfuid_list:
         print("인증 성공! 출입이 허용됩니다.")  # 인증 성공 메시지 출력
         move_servo("DO")  # 서보 모터 문 열기
         failCount = 0  # 실패 횟수 초기화
+        cursor = remote.cursor()
+        for row in result:
+            if row[1] == rfid_uid:
+                print(row[0])
+                sql_succed = """INSERT INTO smartHomeLog(userid, authType, isVerified, isDoorOpen, createDate)
+                                VALUES
+                                (%s, %s, %s, %s, Now())
+                            """
+                data_succed = (row[0], "RFID", "성공", "문열림")
+                cursor.execute(sql_succed, data_succed)
+                remote.commit()
+                cursor.close()   
+            
+
         return True
     else:
         failCount += 1  # 실패 횟수 증가
         print(f"인증 실패! 누적 실패 횟수: {failCount}")  # 실패 메시지 출력
-        move_servo("DC")  # 서보 모터 문 닫기
+        sql_failed = """INSERT INTO smartHomeLog(authType, isVerified,  createDate)
+                                VALUES
+                                (%s, %s, Now())
+                            """
+        data_failed = ("RFID", "실패")
+        cursor.execute(sql_failed, data_failed)
+        remote.commit()
+        cursor.close()  
+        # move_servo("DC")  # 서보 모터 문 닫기
 
         # 3회 이상 연속 실패 시 차단 시간 설정
         if failCount >= 3:
@@ -145,9 +170,9 @@ if __name__ == "__main__":
     print("RFID 인증 시스템 시작...")
 
     while True:
-        uid = wait_for_rfid()  # RFID 태그 감지 대기
-        print(f"감지된 RFID UID: {uid}")  # 감지된 UID 출력
+        rfuid = wait_for_rfid()  # RFID 태그 감지 대기
+        print(f"감지된 RFID UID: {rfuid}")  # 감지된 UID 출력
 
-        authenticate_rfid(uid)  # UID 인증 수행
+        authenticate_rfid(rfuid)  # UID 인증 수행
 
         time.sleep(1)  # 1초 대기 후 다음 태그 감지
