@@ -23,10 +23,16 @@ def receive_data():
 
     elif data['io'] == "garage":
         msg = "garage open" if data['value'] == 1 else "garage close"
+        conn = serial.Serial(port="/dev/ttyACM0", baudrate=9600, timeout=1)
+        position = "GO" if data['value'] == 1 else "GC"
+        conn.write(position.encode())
+        conn.close()
         response = {"message": "Data received", "received": msg}
+    
+    
+    
     elif data['io'] == "door":
         msg = "door open" if data['value'] == 1 else "door close"
-
         position = "DO" if data['value'] == 1 else "DC"
         url = f"http://{HOST}:{PORT}/{position}"
         requests.get(url)
