@@ -24,11 +24,28 @@ This system integrates various sensors and actuators, allowing users to control 
 
 ## Technologies Used
 
-<p align="center">
-  <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=git,anaconda,aws,python,arduino,flask,qt,opencv,ubuntu,apple" />
-  </a>
-</p>
-
+<table align="center">
+  <tr>
+    <td align="left" width="30%">
+      <img src="https://github.com/user-attachments/assets/1a8d6be4-aaf7-4ad8-b8a5-d05e9b1c35ef" width="100%">
+    </td>
+    <td align="left" width="70%">
+      <ul>
+        <li> <b>Software</b>: 
+          <br>
+          <a href="https://skillicons.dev">
+            <img src="https://skillicons.dev/icons?i=git,anaconda,aws,python,arduino,flask,qt,opencv,ubuntu,apple" />
+          </a>
+        </li>
+        <br>
+        <li> <b>Hardware </b>: 
+          <br>
+          <!-- Add hardware details here -->
+          ESP32 Camera, &nbsp;&nbsp;  Arudino Uno3, &nbsp;&nbsp;  Step Motor, &nbsp;&nbsp; Servo Motor, &nbsp;&nbsp; TCRT5000, &nbsp;&nbsp; RFID, &nbsp;&nbsp; Gas Sensor, &nbsp;&nbsp; Speaker, &nbsp;&nbsp; Push Button, &nbsp;&nbsp; LED
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 
