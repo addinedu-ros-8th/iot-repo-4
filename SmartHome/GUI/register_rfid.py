@@ -73,6 +73,18 @@ class Register_RFID(QMainWindow, from_class):
     #유저 정보 저장
     def saveUsers(self):
         rfid = self.edit_rfid_number.text()
+        #중복 확인
+        duplicate_sql = f"SELECT COUNT(*) as cnt FROM users WHERE userUid = '{rfid}'"
+        cursor = self.remote.cursor()
+        cursor.execute(duplicate_sql)
+        duplicate_result = cursor.fetchone()
+        # print(duplicate_result)
+        # print(duplicate_result[0])
+        if duplicate_result[0] > 0:
+            QMessageBox.warning(self, "경고" ,"이미 등록되어있는 Care입니다. 새로운 카드를 태그해 주십시오")
+            return
+
+        #빈칸에러
         if rfid == "":
             QMessageBox.warning(self, "경고" ,"RFID Card가 태그되지 않았습니다 태그해 주십시오")
             return

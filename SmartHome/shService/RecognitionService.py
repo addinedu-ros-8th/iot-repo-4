@@ -10,7 +10,7 @@ sys.path.append("../GUI/insightface/recognition/arcface_torch")
 from backbones.iresnet import iresnet50
 import mysql.connector
 import json
-import socket
+import datetime
 import time
 import requests
 
@@ -219,6 +219,8 @@ try:
         if failCount >= 5:
             if lockout_time is None:
                 lockout_time = time.time()  # 현재 시간 저장
+                fileName = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".png"
+                cv2.imwrite(fileName, frame)
 
             elapsed_time = time.time() - lockout_time
             remaining_time = LOCKOUT_DURATION - elapsed_time
