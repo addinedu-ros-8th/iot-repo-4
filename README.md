@@ -34,7 +34,7 @@ This system integrates various sensors and actuators, allowing users to control 
         <li> <b>Software</b>: 
           <br>
           <a href="https://skillicons.dev">
-            <img src="https://skillicons.dev/icons?i=git,anaconda,aws,python,arduino,flask,qt,opencv,ubuntu,apple" />
+            <img src="https://skillicons.dev/icons?i=git,anaconda,aws,python,arduino,flask,qt,opencv,ubuntu,apple,pytorch" />
           </a>
         </li>
         <br>
