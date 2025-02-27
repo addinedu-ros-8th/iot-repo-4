@@ -80,7 +80,7 @@ def wait_for_rfid():
     Returns:
         str: 감지된 RFID UID 값
     """
-    print("RFID 태그를 스캔하세요")  # 사용자 안내 메시지 출력
+    # print("RFID 태그를 스캔하세요")  # 사용자 안내 메시지 출력
 
     while True:
         if ser.in_waiting > 0:  # 시리얼 버퍼에 데이터가 있는 경우
@@ -103,7 +103,7 @@ def authenticate_rfid(rfid_uid):
     # 인증 차단 여부 확인
     if lockout_time and time.time() - lockout_time < LOCKOUT_DURATION:
         remaining_time = int(LOCKOUT_DURATION - (time.time() - lockout_time))  # 남은 차단 시간 계산
-        print("인증 차단 상태 (남은 시간:", remaining_time, "초)")
+        # print("인증 차단 상태 (남은 시간:", remaining_time, "초)")
         return False  # 인증 불가
 
     # 데이터베이스에서 최신 사용자 UID 목록 가져오기
@@ -120,13 +120,13 @@ def authenticate_rfid(rfid_uid):
 
     # RFID UID가 데이터베이스에 존재하는지 확인
     if rfid_uid in rfuid_list:
-        print("인증 성공! 출입이 허용됩니다.")  # 인증 성공 메시지 출력
+        # print("인증 성공! 출입이 허용됩니다.")  # 인증 성공 메시지 출력
         move_servo("DO")  # 서보 모터 문 열기
         failCount = 0  # 실패 횟수 초기화
         cursor = remote.cursor()
         for row in result:
             if row[1] == rfid_uid:
-                print(row[0])
+                # print(row[0])
                 sql_succed = """INSERT INTO smartHomeLog(userid, authType, isVerified, isDoorOpen, createDate)
                                 VALUES
                                 (%s, %s, %s, %s, Now())
@@ -140,7 +140,7 @@ def authenticate_rfid(rfid_uid):
         return True
     else:
         failCount += 1  # 실패 횟수 증가
-        print(f"인증 실패! 누적 실패 횟수: {failCount}")  # 실패 메시지 출력
+        # print(f"인증 실패! 누적 실패 횟수: {failCount}")  # 실패 메시지 출력
         sql_failed = """INSERT INTO smartHomeLog(authType, isVerified,  createDate)
                                 VALUES
                                 (%s, %s, Now())
@@ -152,7 +152,7 @@ def authenticate_rfid(rfid_uid):
         # move_servo("DC")  # 서보 모터 문 닫기
 
         # 3회 이상 연속 실패 시 차단 시간 설정
-        if failCount >= 3:
+        if failCount >= 5:
             lockout_time = time.time()
             print("연속 3회 인증 실패! 3분간 인증이 차단됩니다.")
 
@@ -167,11 +167,11 @@ if __name__ == "__main__":
     메인 실행 루프.
     RFID 태그를 감지하고 인증을 수행하는 기능을 반복 실행.
     """
-    print("RFID 인증 시스템 시작...")
+    # print("RFID 인증 시스템 시작...")
 
     while True:
         rfuid = wait_for_rfid()  # RFID 태그 감지 대기
-        print(f"감지된 RFID UID: {rfuid}")  # 감지된 UID 출력
+        # print(f"감지된 RFID UID: {rfuid}")  # 감지된 UID 출력
 
         authenticate_rfid(rfuid)  # UID 인증 수행
 
