@@ -17,6 +17,8 @@ import requests
 from Users import UsersWindow
 from gui_log import LogWindow
 import serial
+import json
+
 
 # UI 파일 로드
 from_class = uic.loadUiType("chill_home_gui.ui")[0]
@@ -86,8 +88,8 @@ class WindowClass(QMainWindow, from_class):
         super().__init__()
         self.setupUi(self)
 
-        #가스 값 받아와서 적용하면되용
-        # gas_value = 0
+        # 가스 센서 경고 메시지 전송 플래그 (한 번만 보내도록)
+        self.gas_over_threshold_notified = False
 
         # 가스 센서 스레드 실행
         self.gas_thread = GasSensorThread("/dev/ttyACM1")
@@ -161,18 +163,24 @@ class WindowClass(QMainWindow, from_class):
             self.label_gas_caution.hide()
             self.label_gas_danger.hide()
             gas_safety_level = 0
+            self.gas_over_threshold_notified = False
 
         elif 500 <= gas_value < 700:
             self.label_gas_safe.hide()
             self.label_gas_caution.show()
             self.label_gas_danger.hide()
             gas_safety_level = 1
+            self.gas_over_threshold_notified = False
 
         else:  # gas_value >= 700
             self.label_gas_safe.hide()
             self.label_gas_caution.hide()
             self.label_gas_danger.show()
             gas_safety_level = 2
+
+            if not self.gas_over_threshold_notified:
+                self.send_gas_alert_message(gas_value)
+                self.gas_over_threshold_notified = True
 
      
         cursor = self.remote.cursor()
@@ -181,6 +189,42 @@ class WindowClass(QMainWindow, from_class):
             (gas_value, gas_safety_level)
         )
         self.remote.commit()
+
+
+    def send_gas_alert_message(self, gas_value):
+        """kakao_code.json 파일에서 토큰을 불러와서 경고 메시지를 전송"""
+        try:
+            with open("./kakao_code.json", "r") as fp:
+                tokens = json.load(fp)
+            access_token = tokens["access_token"]
+        except Exception as e:
+            print("토큰 로드 실패:", e)
+            return
+
+        url = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
+        headers = {
+            "Authorization": "Bearer " + access_token,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        template = {
+            "object_type": "text",
+            "text": f"경고! 가스 수치가 위험 수준입니다. 현재 수치: {gas_value}",
+            "link": {
+                "web_url": "https://www.naver.com"
+            }
+        }
+        data = {
+            "template_object": json.dumps(template)
+        }
+        response = requests.post(url, headers=headers, data=data)
+        if response.status_code == 200:
+            result = response.json()
+            if result.get("result_code") == 0:
+                print("경고 메시지 전송 성공!")
+            else:
+                print("경고 메시지 전송 실패:", result)
+        else:
+            print("HTTP 요청 실패, 상태 코드:", response.status_code)
 
 
     #Users tab 열기
