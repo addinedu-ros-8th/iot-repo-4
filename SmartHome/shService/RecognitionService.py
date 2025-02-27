@@ -10,7 +10,7 @@ sys.path.append("../GUI/insightface/recognition/arcface_torch")
 from backbones.iresnet import iresnet50
 import mysql.connector
 import json
-import socket
+import datetime
 import time
 import requests
 
@@ -284,6 +284,8 @@ try:
                 cv2.putText(frame, "Fail", (f.left()+6,f.bottom()-6), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 225), 2)
                 failCount += 1
                 addFailLogStatus()
+                fileName = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".png"
+                cv2.imwrite(fileName, frame)
                
 
             last_auth_time = time.time()
