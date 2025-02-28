@@ -282,8 +282,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QSlider" name="slider_door">
    <property name="geometry">
     <rect>
-     <x>595</x>
-     <y>290</y>
+     <x>590</x>
+     <y>280</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -301,8 +301,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QSlider" name="slider_led">
    <property name="geometry">
     <rect>
-     <x>595</x>
-     <y>140</y>
+     <x>600</x>
+     <y>130</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -439,8 +439,8 @@ border-radius: 5px;  /* 모서리 둥글게 */
   <widget class="QSlider" name="slider_camera">
    <property name="geometry">
     <rect>
-     <x>595</x>
-     <y>70</y>
+     <x>600</x>
+     <y>60</y>
      <width>81</width>
      <height>31</height>
     </rect>
