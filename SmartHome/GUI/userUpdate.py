@@ -70,7 +70,7 @@ class UserUpdateWindow(QMainWindow, from_class):
                 QMessageBox.warning(self, "Update Users", "Rfid Key를 입력해주세요.")
                 return
         
-        sql = "UPDATE users SET password = %s, name = %s, birthday = %s, phone = %s, rfidKey = %s WHERE id = %s"
+        sql = "UPDATE users SET password = %s, name = %s, birthday = %s, phone = %s, userUid = %s WHERE id = %s"
 
         cursor = self.remote.cursor()
         cursor.execute(sql, (passwd, name, birthday, phone, rfidKey, self.ids[0]))
