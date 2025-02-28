@@ -56,5 +56,89 @@ This system integrates various sensors and actuators, allowing users to control 
   <img width="797" alt="Image" src="https://github.com/user-attachments/assets/8514f942-678c-4465-8132-71987d0cfbc2" />
 </p>
 
+## System Requriements
+<table align="center">
+  <tr>
+    <td valign="top">
+      <img src="https://github.com/user-attachments/assets/e4f4f417-b203-4c1d-9f84-a32d16b25a1d" alt="Image 1" width="500">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/fc35b743-2d90-4fc1-9c9e-916ad2c2e09f" alt="Image 2" width="500">
+    </td>
+  </tr>
+</table>
+
+
+## System Architecture
+<img align="center" width="1000" alt="Image" src="https://github.com/user-attachments/assets/7acf757f-749d-47a5-b45f-1d83edd5a831" />
+
+## Database
+<p align="center">
+  <img  width="800" alt="Image" src="https://github.com/user-attachments/assets/4dfdb029-6a1a-4b57-8d9e-9e952dec49d6" />
+</p>
+
+## GUI
+
+<table align="center">
+  <tr>
+    <td valign="top">
+      <img width="335" alt="Image" src="https://github.com/user-attachments/assets/806f69a7-cd5b-40b6-8fe9-eafda187265d" />
+    </td>
+  </tr>
+</table>
+<p align="center">
+  Once you log in -> the main panel will show up, which allows you to controll your house
+</p>
+<p>
+  <table align="center">
+    <tr>
+      <td>
+        <img width="469" alt="Image" src="https://github.com/user-attachments/assets/eeba5b03-1556-42d2-8583-9552ecb98fda" />
+      </td>
+      <td> 
+        <table>
+          <tr>
+            <td valign="top">1</td>
+            <td>현관 카메라 작동 버튼 및 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">2</td>
+            <td>현관 카메라 화면</td>
+          </tr>
+          <tr>
+            <td valign="top">3</td>
+            <td>조명 제어 버튼 및 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">4</td>
+            <td>차고문 제어 버튼 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">5</td>
+            <td>현관문 제어 버튼 및 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">6</td>
+            <td>창문 제어 버튼 및 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">7</td>
+            <td>현재 가스 상태 확인</td>
+          </tr>
+          <tr>
+            <td valign="top">8</td>
+            <td>Usertab 버튼</td>
+          </tr>
+          <tr>
+            <td valign="top">9</td>
+            <td>Logtab 버튼</td>
+          </tr>
+        </table>
+      </td>
+          
+  </table>
+  
+</p>
+
 
 
