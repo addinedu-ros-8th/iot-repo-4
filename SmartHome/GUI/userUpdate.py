@@ -30,8 +30,9 @@ class UserUpdateWindow(QMainWindow, from_class):
         query = f"SELECT * FROM users WHERE id = '{self.ids[0]}'"
         cursor.execute(query)
         results = cursor.fetchall()[0]
+        print(results)
         
-        self.editId.setText(results[1])
+        self.editId.setText(results[2])
         self.editName.setText(results[4])
         self.editBirthday.setDate(QDate.fromString(results[5], 'yyyyMMdd'))
         self.editPhone.setText(results[6])
