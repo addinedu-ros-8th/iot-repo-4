@@ -49,3 +49,12 @@ This system integrates various sensors and actuators, allowing users to control 
 </table>
 
 
+## Scenario
+<p align="center">
+  <img width="797" alt="FaceID" src="https://github.com/user-attachments/assets/4a7569e4-3137-4ae3-8614-3cad2de08269" />
+  <img width="797" alt="Gas" src="https://github.com/user-attachments/assets/0b3f586e-0202-4cc0-b409-496e79927be3" />
+  <img width="797" alt="Image" src="https://github.com/user-attachments/assets/8514f942-678c-4465-8132-71987d0cfbc2" />
+</p>
+
+
+
