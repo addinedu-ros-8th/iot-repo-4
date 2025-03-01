@@ -48,6 +48,14 @@ This system integrates various sensors and actuators, allowing users to control 
   </tr>
 </table>
 
+## 구성원 및 역할
+|구성원|역할|
+|-----|-----|
+|송원준 (팀장)|프로젝트 관리, confluence 관리, Jira 관리, github 관리, db설계, db관리, 로그인, 사용자 등록, 사용자 삭제, 사용자 수정, <br>HTTP 통신, Serial 통신, 현관문 제어, 모니터링, 얼굴 인증, 조명 제어, 인증 알림|
+|김가은|confluence 작성, Jira 작성, 차고문 제어, 장애물 감지, 차량정보, 차량번호 등록, 차량번호 수정, 차량번호 삭제, Readme 관리|
+|나덕윤|confluence 작성, Jira 작성, RFID 인증, GUI 설계, 현관문 카메라, PPT 제작, 발표|
+|이상윤|confluence 작성, jira 작성, 전장 설계, 번호판 인증, 가스 농도 감지, 로그, 문자 발송, 창문 제어, 스피커 제어, 집 제작|
+
 
 ## Scenario
 <p align="center">
