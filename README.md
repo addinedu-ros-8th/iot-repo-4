@@ -10,7 +10,7 @@ This system integrates various sensors and actuators, allowing users to control 
 ## Features
 
 - **👤Face ID Authentication**: Provides secure access control using facial recognition technology.
-- **🔑RFID KEY**: 
+- **🔑RFID KEY**: Provides secure access control using registered RFID cards.
 
 - **🚪Automated Garage Door**: Utilizes OpenCV and EasyOCR for vehicle license plate recognition to grant or deny access.
 
